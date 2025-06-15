@@ -23,11 +23,13 @@ Selamat datang di dokumentasi lengkap Room Booking System! Dokumentasi ini diran
 ### 🔧 Development
 - [Git Workflow](docs/development/git-workflow.md) - Workflow Git dan kolaborasi tim
 - [Tools & Utilities](docs/development/tools.md) - Development tools dan automation scripts
+- [Advanced Features](docs/development/advanced-features.md) - CI/CD, Monitoring, Security, i18n
 
 ### 🛠 Tools & Automation
 - [Tools Directory](tools/README.md) - Script dan utilities untuk development
 - [Start App Script](tools/start_app.sh) - One-click application startup
 - [User Management](tools/make_staff.py) - Convert user ke staff/admin
+- [Performance Testing](tools/performance_test.sh) - System performance validation
 - [GitHub Setup](tools/github_setup.sh) - Repository setup guide
 
 ### 🐛 Troubleshooting

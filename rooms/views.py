@@ -238,3 +238,7 @@ def check_availability(request):
     
     except Exception as e:
         return JsonResponse({'available': False, 'message': f'Error: {str(e)}'})
+
+
+# Import monitoring views
+from .monitoring import health_check, health_detailed, metrics

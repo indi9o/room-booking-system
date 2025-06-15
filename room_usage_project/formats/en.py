@@ -1,0 +1,15 @@
+# English date/time formats
+
+DATE_FORMAT = 'F j, Y'
+TIME_FORMAT = 'g:i A'
+DATETIME_FORMAT = 'F j, Y g:i A'
+YEAR_MONTH_FORMAT = 'F Y'
+MONTH_DAY_FORMAT = 'F j'
+SHORT_DATE_FORMAT = 'm/d/Y'
+SHORT_DATETIME_FORMAT = 'm/d/Y g:i A'
+FIRST_DAY_OF_WEEK = 0  # Sunday
+
+# Number formatting
+DECIMAL_SEPARATOR = '.'
+THOUSAND_SEPARATOR = ','
+NUMBER_GROUPING = 3

@@ -21,7 +21,9 @@ echo -e "${GREEN}1.${NC} ${PURPLE}start_app.sh${NC}     - 🚀 One-click applica
 echo -e "${GREEN}2.${NC} ${PURPLE}make_staff.py${NC}    - 👤 Convert user to staff/admin"
 echo -e "${GREEN}3.${NC} ${PURPLE}github_setup.sh${NC}  - 🌐 GitHub repository setup guide"
 echo -e "${GREEN}4.${NC} ${PURPLE}push_to_github.sh${NC} - 📤 Safe push to GitHub"
-echo -e "${GREEN}5.${NC} ${PURPLE}tools/README.md${NC}   - 📖 Complete tools documentation"
+echo -e "${GREEN}5.${NC} ${PURPLE}setup_i18n.sh${NC}    - 🌍 Setup internationalization"
+echo -e "${GREEN}6.${NC} ${PURPLE}performance_test.sh${NC} - ⚡ Performance testing & health checks"
+echo -e "${GREEN}7.${NC} ${PURPLE}tools/README.md${NC}   - 📖 Complete tools documentation"
 echo ""
 
 echo -e "${YELLOW}Quick Commands:${NC}"
@@ -35,6 +37,12 @@ echo ""
 echo -e "${GREEN}Repository:${NC}"
 echo "  ./tools/github_setup.sh           # GitHub setup instructions"
 echo "  ./tools/push_to_github.sh         # Safe push to repository"
+echo ""
+
+echo -e "${GREEN}Advanced Features:${NC}"
+echo "  ./tools/setup_i18n.sh             # Setup internationalization"
+echo "  ./tools/performance_test.sh       # Performance testing suite"
+echo "  ./tools/performance_test.sh quick # Quick performance test"
 echo ""
 
 echo -e "${GREEN}Documentation:${NC}"

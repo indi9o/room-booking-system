@@ -1,6 +1,11 @@
 # 🏢 Room Booking System
 
-![Django](https://img.shields.io/badge/Django-4.2.7-green) ![Python](https://img.shields.io/badge/Python-3.11-blue) ![MySQL](https://img.shields.io/badge/MySQL-8.0-orange) ![Docker](https://img.shields.io/badge/Docker-Compose-blue) ![Bootstrap](https://img.shields.io/badge/Bootstrap-5-purple)
+![### 🛠 Development Tools
+- **🎯 [Development Tools](docs/development/tools.md)** - Complete tools guide
+- **⚡ [Start App Script](tools/start_app.sh)** - One-click setup & run
+- **👤 [User Management](tools/make_staff.py)** - Make users staff/admin
+- **⚡ [Performance Testing](tools/performance_test.sh)** - System performance validation
+- **🌐 [GitHub Setup](tools/github_setup.sh)** - Repository setup guideo](https://img.shields.io/badge/Django-4.2.7-green) ![Python](https://img.shields.io/badge/Python-3.11-blue) ![MySQL](https://img.shields.io/badge/MySQL-8.0-orange) ![Docker](https://img.shields.io/badge/Docker-Compose-blue) ![Bootstrap](https://img.shields.io/badge/Bootstrap-5-purple)
 
 A complete **Room Booking System** built with Django 4.2.7, MySQL 8.0, and Docker. This application provides a modern, responsive interface for managing room reservations with user authentication, admin panel, and comprehensive booking management.
 

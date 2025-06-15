@@ -1,0 +1,15 @@
+# Indonesian date/time formats
+
+DATE_FORMAT = 'd F Y'
+TIME_FORMAT = 'H:i'
+DATETIME_FORMAT = 'd F Y H:i'
+YEAR_MONTH_FORMAT = 'F Y'
+MONTH_DAY_FORMAT = 'j F'
+SHORT_DATE_FORMAT = 'd/m/Y'
+SHORT_DATETIME_FORMAT = 'd/m/Y H:i'
+FIRST_DAY_OF_WEEK = 1  # Monday
+
+# Number formatting
+DECIMAL_SEPARATOR = ','
+THOUSAND_SEPARATOR = '.'
+NUMBER_GROUPING = 3

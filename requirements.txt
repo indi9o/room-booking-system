@@ -5,3 +5,25 @@ Pillow==10.1.0
 django-crispy-forms==2.1
 crispy-bootstrap5==0.7
 django-bootstrap-datepicker-plus==5.0.4
+
+# Monitoring & Performance
+psutil==5.9.6
+django-extensions==3.2.3
+
+# Security
+django-ratelimit==4.1.0
+django-cors-headers==4.3.1
+
+# Testing & Development
+coverage==7.3.2
+pytest==7.4.3
+pytest-django==4.7.0
+factory-boy==3.3.0
+
+# Internationalization
+django-rosetta==0.9.9
+
+# Production & Deployment
+gunicorn==21.2.0
+whitenoise==6.6.0
+sentry-sdk[django]==1.38.0

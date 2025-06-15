@@ -7,6 +7,8 @@ Direktori ini berisi berbagai script dan utility untuk membantu development, dep
 ### 🚀 Development & Setup
 - **[start_app.sh](#start_appsh)** - Script startup aplikasi dengan setup otomatis
 - **[make_staff.py](#make_staffpy)** - Script untuk menjadikan user sebagai staff/admin
+- **[setup_i18n.sh](#setup_i18nsh)** - Setup internationalization dan multi-language support
+- **[performance_test.sh](#performance_testsh)** - Comprehensive performance testing dan health checks
 
 ### 🌐 Git & Repository Management  
 - **[github_setup.sh](#github_setupsh)** - Panduan setup repository GitHub
@@ -111,6 +113,80 @@ chmod +x tools/push_to_github.sh
 ```
 
 **Perfect for**: Safe repository updates, team collaboration
+
+---
+
+### setup_i18n.sh
+**Purpose**: Setup internationalization untuk multi-language support
+
+**Features**:
+- ✅ Create locale directories untuk semua supported languages
+- ✅ Generate translation files (.po files)
+- ✅ Setup Django Rosetta untuk translation management
+- ✅ Compile existing translations
+- ✅ JavaScript translation support
+
+**Usage**:
+```bash
+# Make executable and run
+chmod +x tools/setup_i18n.sh
+./tools/setup_i18n.sh
+```
+
+**What it does**:
+- Creates locale directories (en, id, zh, ja, ko)
+- Generates django.po files for each language
+- Compiles message files
+- Sets up translation management interface
+
+**Perfect for**: Adding multi-language support, translation management
+
+---
+
+### performance_test.sh
+**Purpose**: Comprehensive performance testing dan health checking untuk sistem
+
+**Features**:
+- ✅ Service availability checking
+- ✅ Response time measurement untuk setiap endpoint
+- ✅ API endpoint performance testing
+- ✅ Basic load testing dengan Apache Bench
+- ✅ Database connectivity testing
+- ✅ Security headers validation
+- ✅ Comprehensive performance reporting
+- ✅ Color-coded output dan thresholds
+- ✅ Multiple test modes (quick, load, security)
+
+**Usage**:
+```bash
+# Make executable
+chmod +x tools/performance_test.sh
+
+# Full performance test suite
+./tools/performance_test.sh
+
+# Quick performance test only
+./tools/performance_test.sh quick
+
+# Load testing only
+./tools/performance_test.sh load
+
+# Security headers test only
+./tools/performance_test.sh security
+```
+
+**Requirements**:
+- curl (untuk HTTP testing)
+- bc (untuk calculations) 
+- ab (Apache Bench, optional untuk load testing)
+
+**Performance Thresholds**:
+- **Excellent**: < 500ms
+- **Acceptable**: < 2000ms
+- **Slow**: < 5000ms
+- **Unacceptable**: > 5000ms
+
+**Perfect for**: Production readiness testing, performance monitoring, CI/CD validation
 
 ---
 
