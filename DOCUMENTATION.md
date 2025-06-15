@@ -22,6 +22,13 @@ Selamat datang di dokumentasi lengkap Room Booking System! Dokumentasi ini diran
 
 ### 🔧 Development
 - [Git Workflow](docs/development/git-workflow.md) - Workflow Git dan kolaborasi tim
+- [Tools & Utilities](docs/development/tools.md) - Development tools dan automation scripts
+
+### 🛠 Tools & Automation
+- [Tools Directory](tools/README.md) - Script dan utilities untuk development
+- [Start App Script](tools/start_app.sh) - One-click application startup
+- [User Management](tools/make_staff.py) - Convert user ke staff/admin
+- [GitHub Setup](tools/github_setup.sh) - Repository setup guide
 
 ### 🐛 Troubleshooting
 - [Common Issues](docs/troubleshooting.md) - Masalah umum dan solusi

@@ -23,15 +23,19 @@ docker-compose up -d
 ### 🎯 Quick Navigation
 - **🚀 [Quick Start Guide](docs/setup/quick-start.md)** - Get running in 5 minutes
 - **🏢 [Room Management](docs/features/room-management.md)** - Complete room management guide
-- **📅 [Booking System](docs/features/booking-system.md)** - How to use booking features
-- **🔧 [Troubleshooting](docs/troubleshooting.md)** - Fix common issues
+- ** [Troubleshooting](docs/troubleshooting.md)** - Fix common issues
 - **❓ [FAQ](docs/faq.md)** - Frequently asked questions
+
+### 🛠 Development Tools
+- **🎯 [Development Tools](docs/development/tools.md)** - Complete tools guide
+- **⚡ [Start App Script](tools/start_app.sh)** - One-click setup & run
+- **� [User Management](tools/make_staff.py)** - Make users staff/admin
+- **🌐 [GitHub Setup](tools/github_setup.sh)** - Repository setup guide
 
 ### 🛠 Setup & Deployment
 - **💻 [System Requirements](docs/setup/requirements.md)** - What you need
-- **🐳 [Docker Setup](docs/setup/docker-setup.md)** - Docker installation guide
 - **🚀 [Production Deployment](docs/deployment/production.md)** - Deploy to production
-- **⚙️ [Environment Setup](docs/setup/environment.md)** - Configuration guide
+- **🌐 [Remote Repository Setup](docs/setup/remote-repository.md)** - GitHub/GitLab setup
 
 ## Fitur Utama
 
