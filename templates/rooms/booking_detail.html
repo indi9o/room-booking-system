@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+
+{% block title %}Detail Booking - {{ booking.title }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4><i class="fas fa-calendar-check"></i> Detail Booking</h4>
+                {% if booking.status == 'pending' %}
+                    <span class="badge bg-warning fs-6">Menunggu Persetujuan</span>
+                {% elif booking.status == 'approved' %}
+                    <span class="badge bg-success fs-6">Disetujui</span>
+                {% elif booking.status == 'rejected' %}
+                    <span class="badge bg-danger fs-6">Ditolak</span>
+                {% elif booking.status == 'cancelled' %}
+                    <span class="badge bg-secondary fs-6">Dibatalkan</span>
+                {% elif booking.status == 'completed' %}
+                    <span class="badge bg-primary fs-6">Selesai</span>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                <h5>{{ booking.title }}</h5>
+                {% if booking.description %}
+                <p class="text-muted">{{ booking.description }}</p>
+                {% endif %}
+                
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-door-open"></i> Ruangan</h6>
+                        <p><a href="{% url 'room_detail' booking.room.pk %}" class="text-decoration-none">{{ booking.room.name }}</a></p>
+                        <p class="text-muted small">
+                            <i class="fas fa-map-marker-alt"></i> {{ booking.room.location }}
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-users"></i> Peserta</h6>
+                        <p>{{ booking.participants }} orang</p>
+                        <p class="text-muted small">Kapasitas ruangan: {{ booking.room.capacity }} orang</p>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-calendar"></i> Tanggal & Waktu</h6>
+                        <p>
+                            <strong>Mulai:</strong> {{ booking.start_datetime|date:"d/m/Y H:i" }}<br>
+                            <strong>Selesai:</strong> {{ booking.end_datetime|date:"d/m/Y H:i" }}
+                        </p>
+                        <p class="text-muted small">Durasi: {{ booking.duration|floatformat:1 }} jam</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-info-circle"></i> Status Waktu</h6>
+                        {% if booking.is_past %}
+                            <span class="badge bg-secondary">Sudah Lewat</span>
+                        {% elif booking.is_ongoing %}
+                            <span class="badge bg-warning">Sedang Berlangsung</span>
+                        {% else %}
+                            <span class="badge bg-info">Akan Datang</span>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                {% if booking.notes %}
+                <h6><i class="fas fa-sticky-note"></i> Catatan</h6>
+                <p>{{ booking.notes }}</p>
+                {% endif %}
+                
+                {% if booking.approved_by %}
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle"></i> 
+                    Disetujui oleh: <strong>{{ booking.approved_by.get_full_name|default:booking.approved_by.username }}</strong>
+                    pada {{ booking.approved_at|date:"d/m/Y H:i" }}
+                </div>
+                {% endif %}
+            </div>
+            
+            {% if booking.status == 'pending' and not booking.is_past %}
+            <div class="card-footer">
+                <div class="d-flex gap-2">
+                    <a href="{% url 'update_booking' booking.pk %}" class="btn btn-warning">
+                        <i class="fas fa-edit"></i> Edit Booking
+                    </a>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelModal">
+                        <i class="fas fa-times"></i> Batalkan
+                    </button>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <!-- Informasi Tambahan -->
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5><i class="fas fa-info-circle"></i> Informasi Booking</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Dibuat:</strong> {{ booking.created_at|date:"d/m/Y H:i" }}</p>
+                {% if booking.updated_at != booking.created_at %}
+                <p><strong>Diupdate:</strong> {{ booking.updated_at|date:"d/m/Y H:i" }}</p>
+                {% endif %}
+                <p><strong>ID Booking:</strong> #{{ booking.id }}</p>
+            </div>
+        </div>
+        
+        <!-- Riwayat Status -->
+        {% if history %}
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-history"></i> Riwayat Status</h5>
+            </div>
+            <div class="card-body">
+                {% for h in history %}
+                <div class="mb-3 p-2 border-start border-primary border-3">
+                    <small class="text-muted">{{ h.created_at|date:"d/m/Y H:i" }}</small>
+                    <p class="mb-1">
+                        <strong>{{ h.old_status|title }}</strong> → <strong>{{ h.new_status|title }}</strong>
+                    </p>
+                    <small class="text-muted">
+                        oleh {{ h.changed_by.get_full_name|default:h.changed_by.username }}
+                        {% if h.notes %}<br>{{ h.notes }}{% endif %}
+                    </small>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Cancel Modal -->
+{% if booking.status == 'pending' and not booking.is_past %}
+<div class="modal fade" id="cancelModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Konfirmasi Pembatalan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Apakah Anda yakin ingin membatalkan booking ini?</p>
+                <p><strong>{{ booking.title }}</strong></p>
+                <p class="text-muted">{{ booking.start_datetime|date:"d/m/Y H:i" }} - {{ booking.end_datetime|date:"H:i" }}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tidak</button>
+                <form method="post" action="{% url 'cancel_booking' booking.pk %}" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Ya, Batalkan</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<div class="row mt-4">
+    <div class="col-12">
+        <a href="{% url 'booking_list' %}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left"></i> Kembali ke Daftar Booking
+        </a>
+    </div>
+</div>
+{% endblock %}

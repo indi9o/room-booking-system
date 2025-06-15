@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Edit Booking - {{ booking.title }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-warning text-dark">
+                <h4><i class="fas fa-edit"></i> Edit Booking</h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i> 
+                    Anda sedang mengedit booking untuk ruangan: <strong>{{ booking.room.name }}</strong>
+                </div>
+                
+                {% crispy form %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5><i class="fas fa-door-open"></i> Informasi Ruangan</h5>
+            </div>
+            <div class="card-body">
+                {% if booking.room.image %}
+                <img src="{{ booking.room.image.url }}" class="img-fluid rounded mb-3" alt="{{ booking.room.name }}">
+                {% endif %}
+                <h6>{{ booking.room.name }}</h6>
+                <p class="text-muted mb-2">
+                    <i class="fas fa-map-marker-alt"></i> {{ booking.room.location }}
+                </p>
+                <p class="mb-2">
+                    <i class="fas fa-users"></i> Kapasitas: {{ booking.room.capacity }} orang
+                </p>
+                {% if booking.room.facilities %}
+                <p class="mb-0">
+                    <i class="fas fa-cog"></i> {{ booking.room.facilities }}
+                </p>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-exclamation-triangle"></i> Perhatian</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <i class="fas fa-clock text-warning"></i> 
+                        Perubahan jadwal akan direset ke status "Menunggu"
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-users text-warning"></i> 
+                        Pastikan jumlah peserta sesuai kapasitas
+                    </li>
+                    <li class="mb-0">
+                        <i class="fas fa-calendar text-warning"></i> 
+                        Cek ketersediaan ruangan sebelum menyimpan
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <a href="{% url 'booking_detail' booking.pk %}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left"></i> Kembali ke Detail Booking
+        </a>
+    </div>
+</div>
+{% endblock %}

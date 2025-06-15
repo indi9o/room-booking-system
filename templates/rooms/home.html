@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+
+{% block title %}Beranda - Sistem Booking Ruangan{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="row mb-5">
+    <div class="col-12">
+        <div class="bg-primary text-white p-5 rounded">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h1 class="display-5 fw-bold">Selamat Datang di Sistem Booking Ruangan</h1>
+                    <p class="lead">Booking ruangan dengan mudah, cepat, dan efisien. Kelola jadwal penggunaan ruangan Anda dengan sistem yang user-friendly.</p>
+                    {% if not user.is_authenticated %}
+                    <a href="{% url 'register' %}" class="btn btn-light btn-lg me-3">
+                        <i class="fas fa-user-plus"></i> Daftar Sekarang
+                    </a>
+                    <a href="{% url 'login' %}" class="btn btn-outline-light btn-lg">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </a>
+                    {% else %}
+                    <a href="{% url 'create_booking' %}" class="btn btn-light btn-lg me-3">
+                        <i class="fas fa-plus"></i> Buat Booking Baru
+                    </a>
+                    <a href="{% url 'room_list' %}" class="btn btn-outline-light btn-lg">
+                        <i class="fas fa-door-open"></i> Lihat Ruangan
+                    </a>
+                    {% endif %}
+                </div>
+                <div class="col-lg-4 text-center">
+                    <i class="fas fa-building display-1"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Statistics Section -->
+<div class="row mb-5">
+    <div class="col-12">
+        <h2 class="text-center mb-4">Fitur Utama</h2>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card text-center h-100 card-hover">
+            <div class="card-body">
+                <i class="fas fa-clock display-4 text-primary mb-3"></i>
+                <h5 class="card-title">Booking Real-time</h5>
+                <p class="card-text">Sistem booking real-time dengan notifikasi langsung untuk konfirmasi atau penolakan.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card text-center h-100 card-hover">
+            <div class="card-body">
+                <i class="fas fa-calendar-check display-4 text-success mb-3"></i>
+                <h5 class="card-title">Manajemen Jadwal</h5>
+                <p class="card-text">Kelola jadwal booking dengan mudah, lihat ketersediaan ruangan, dan hindari konflik waktu.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card text-center h-100 card-hover">
+            <div class="card-body">
+                <i class="fas fa-users display-4 text-info mb-3"></i>
+                <h5 class="card-title">Multi User</h5>
+                <p class="card-text">Sistem mendukung multiple user dengan role yang berbeda untuk pengelolaan yang optimal.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Available Rooms -->
+<div class="row mb-5">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Ruangan Tersedia</h2>
+            <a href="{% url 'room_list' %}" class="btn btn-outline-primary">
+                Lihat Semua <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+    
+    {% for room in rooms %}
+    <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card h-100 card-hover">
+            {% if room.image %}
+            <img src="{{ room.image.url }}" class="card-img-top" style="height: 200px; object-fit: cover;" alt="{{ room.name }}">
+            {% else %}
+            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                <i class="fas fa-door-open fa-3x text-muted"></i>
+            </div>
+            {% endif %}
+            
+            <div class="card-body">
+                <h5 class="card-title">{{ room.name }}</h5>
+                <p class="card-text">
+                    <small class="text-muted">
+                        <i class="fas fa-map-marker-alt"></i> {{ room.location }}
+                    </small>
+                </p>
+                <p class="card-text">{{ room.description|truncatewords:15 }}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="badge bg-primary">
+                        <i class="fas fa-users"></i> {{ room.capacity }} orang
+                    </span>
+                    <div>
+                        <a href="{% url 'room_detail' room.pk %}" class="btn btn-sm btn-outline-primary">Detail</a>
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'create_booking_room' room.pk %}" class="btn btn-sm btn-primary">Booking</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info text-center">
+            <i class="fas fa-info-circle"></i> Belum ada ruangan yang tersedia.
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Recent Bookings for Authenticated Users -->
+{% if user.is_authenticated and recent_bookings %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Booking Terakhir Anda</h2>
+            <a href="{% url 'booking_list' %}" class="btn btn-outline-primary">
+                Lihat Semua <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+    
+    {% for booking in recent_bookings %}
+    <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card card-hover">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <h6 class="card-title">{{ booking.title }}</h6>
+                    {% if booking.status == 'pending' %}
+                        <span class="badge bg-warning status-badge">Menunggu</span>
+                    {% elif booking.status == 'approved' %}
+                        <span class="badge bg-success status-badge">Disetujui</span>
+                    {% elif booking.status == 'rejected' %}
+                        <span class="badge bg-danger status-badge">Ditolak</span>
+                    {% elif booking.status == 'cancelled' %}
+                        <span class="badge bg-secondary status-badge">Dibatalkan</span>
+                    {% else %}
+                        <span class="badge bg-primary status-badge">{{ booking.get_status_display }}</span>
+                    {% endif %}
+                </div>
+                <p class="card-text">
+                    <i class="fas fa-door-open"></i> {{ booking.room.name }}<br>
+                    <i class="fas fa-calendar"></i> {{ booking.start_datetime|date:"d/m/Y H:i" }}
+                </p>
+                <a href="{% url 'booking_detail' booking.pk %}" class="btn btn-sm btn-outline-primary">Detail</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endblock %}

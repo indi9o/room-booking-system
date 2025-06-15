@@ -1,0 +1,23 @@
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.home, name='home'),
+    path('register/', views.register, name='register'),
+    
+    # Room URLs
+    path('rooms/', views.RoomListView.as_view(), name='room_list'),
+    path('rooms/create/', views.create_room, name='create_room'),
+    path('rooms/<int:pk>/', views.RoomDetailView.as_view(), name='room_detail'),
+    
+    # Booking URLs
+    path('bookings/', views.BookingListView.as_view(), name='booking_list'),
+    path('bookings/<int:pk>/', views.BookingDetailView.as_view(), name='booking_detail'),
+    path('bookings/create/', views.create_booking, name='create_booking'),
+    path('bookings/create/<int:room_id>/', views.create_booking, name='create_booking_room'),
+    path('bookings/<int:pk>/update/', views.update_booking, name='update_booking'),
+    path('bookings/<int:pk>/cancel/', views.cancel_booking, name='cancel_booking'),
+    
+    # AJAX URLs
+    path('ajax/check-availability/', views.check_availability, name='check_availability'),
+]

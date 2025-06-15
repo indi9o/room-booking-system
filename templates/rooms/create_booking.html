@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Buat Booking - Sistem Booking Ruangan{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4><i class="fas fa-calendar-plus"></i> Buat Booking Baru</h4>
+            </div>
+            <div class="card-body">
+                {% if room %}
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i> 
+                    Anda akan membuat booking untuk ruangan: <strong>{{ room.name }}</strong>
+                </div>
+                {% endif %}
+                
+                {% crispy form %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        {% if room %}
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5><i class="fas fa-door-open"></i> Informasi Ruangan</h5>
+            </div>
+            <div class="card-body">
+                {% if room.image %}
+                <img src="{{ room.image.url }}" class="img-fluid rounded mb-3" alt="{{ room.name }}">
+                {% endif %}
+                <h6>{{ room.name }}</h6>
+                <p class="text-muted mb-2">
+                    <i class="fas fa-map-marker-alt"></i> {{ room.location }}
+                </p>
+                <p class="mb-2">
+                    <i class="fas fa-users"></i> Kapasitas: {{ room.capacity }} orang
+                </p>
+                {% if room.facilities %}
+                <p class="mb-0">
+                    <i class="fas fa-cog"></i> {{ room.facilities }}
+                </p>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+        
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-info-circle"></i> Panduan Booking</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success"></i> 
+                        Pilih ruangan yang sesuai kebutuhan
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success"></i> 
+                        Isi detail acara dengan lengkap
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success"></i> 
+                        Tentukan waktu mulai dan selesai
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success"></i> 
+                        Pastikan jumlah peserta sesuai kapasitas
+                    </li>
+                    <li class="mb-0">
+                        <i class="fas fa-check text-success"></i> 
+                        Tunggu konfirmasi dari admin
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    // Function to check room availability
+    function checkAvailability() {
+        var room_id = $('#id_room').val();
+        var start_datetime = $('#id_start_datetime').val();
+        var end_datetime = $('#id_end_datetime').val();
+        
+        if (room_id && start_datetime && end_datetime) {
+            $.ajax({
+                url: '{% url "check_availability" %}',
+                data: {
+                    'room_id': room_id,
+                    'start_datetime': start_datetime,
+                    'end_datetime': end_datetime
+                },
+                success: function(data) {
+                    if (data.available) {
+                        $('#availability-message').html('<div class="alert alert-success"><i class="fas fa-check"></i> ' + data.message + '</div>');
+                    } else {
+                        $('#availability-message').html('<div class="alert alert-danger"><i class="fas fa-times"></i> ' + data.message + '</div>');
+                    }
+                }
+            });
+        }
+    }
+    
+    // Check availability when datetime fields change
+    $('#id_start_datetime, #id_end_datetime, #id_room').change(checkAvailability);
+});
+</script>
+<div id="availability-message"></div>
+{% endblock %}

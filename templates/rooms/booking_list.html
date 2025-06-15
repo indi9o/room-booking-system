@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+
+{% block title %}Booking Saya - Sistem Booking Ruangan{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center">
+            <h1><i class="fas fa-calendar-check"></i> Booking Saya</h1>
+            <a href="{% url 'create_booking' %}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Buat Booking Baru
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Filter -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <form method="get" class="row g-3 align-items-end">
+                    <div class="col-md-4">
+                        <label for="status" class="form-label">Filter Status</label>
+                        <select name="status" id="status" class="form-select">
+                            <option value="">Semua Status</option>
+                            <option value="pending" {% if request.GET.status == 'pending' %}selected{% endif %}>Menunggu</option>
+                            <option value="approved" {% if request.GET.status == 'approved' %}selected{% endif %}>Disetujui</option>
+                            <option value="rejected" {% if request.GET.status == 'rejected' %}selected{% endif %}>Ditolak</option>
+                            <option value="cancelled" {% if request.GET.status == 'cancelled' %}selected{% endif %}>Dibatalkan</option>
+                            <option value="completed" {% if request.GET.status == 'completed' %}selected{% endif %}>Selesai</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-outline-primary">
+                            <i class="fas fa-filter"></i> Filter
+                        </button>
+                        <a href="{% url 'booking_list' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-times"></i> Reset
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bookings -->
+<div class="row">
+    {% for booking in bookings %}
+    <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <h6 class="card-title">{{ booking.title }}</h6>
+                    {% if booking.status == 'pending' %}
+                        <span class="badge bg-warning">Menunggu</span>
+                    {% elif booking.status == 'approved' %}
+                        <span class="badge bg-success">Disetujui</span>
+                    {% elif booking.status == 'rejected' %}
+                        <span class="badge bg-danger">Ditolak</span>
+                    {% elif booking.status == 'cancelled' %}
+                        <span class="badge bg-secondary">Dibatalkan</span>
+                    {% elif booking.status == 'completed' %}
+                        <span class="badge bg-primary">Selesai</span>
+                    {% endif %}
+                </div>
+                
+                <p class="card-text">
+                    <i class="fas fa-door-open"></i> {{ booking.room.name }}<br>
+                    <i class="fas fa-map-marker-alt"></i> {{ booking.room.location }}<br>
+                    <i class="fas fa-calendar"></i> {{ booking.start_datetime|date:"d/m/Y H:i" }}<br>
+                    <i class="fas fa-clock"></i> {{ booking.end_datetime|date:"H:i" }}<br>
+                    <i class="fas fa-users"></i> {{ booking.participants }} orang
+                </p>
+                
+                {% if booking.is_past %}
+                <small class="text-muted">
+                    <i class="fas fa-history"></i> Sudah lewat
+                </small>
+                {% elif booking.is_ongoing %}
+                <small class="text-success">
+                    <i class="fas fa-play"></i> Sedang berlangsung
+                </small>
+                {% endif %}
+            </div>
+            
+            <div class="card-footer bg-transparent">
+                <div class="d-flex gap-2">
+                    <a href="{% url 'booking_detail' booking.pk %}" class="btn btn-sm btn-outline-primary flex-fill">
+                        <i class="fas fa-eye"></i> Detail
+                    </a>
+                    {% if booking.status == 'pending' and not booking.is_past %}
+                    <a href="{% url 'update_booking' booking.pk %}" class="btn btn-sm btn-outline-warning">
+                        <i class="fas fa-edit"></i> Edit
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info text-center">
+            <i class="fas fa-calendar-times fa-2x mb-3"></i>
+            <h4>Belum ada booking</h4>
+            <p class="mb-3">Anda belum memiliki booking apapun.</p>
+            <a href="{% url 'create_booking' %}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Buat Booking Pertama
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Pagination -->
+{% if is_paginated %}
+<div class="row">
+    <div class="col-12">
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">
+                        <i class="fas fa-angle-left"></i> Sebelumnya
+                    </a>
+                </li>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                <li class="page-item active">
+                    <span class="page-link">{{ num }}</span>
+                </li>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ num }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">{{ num }}</a>
+                </li>
+                {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">
+                        Selanjutnya <i class="fas fa-angle-right"></i>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

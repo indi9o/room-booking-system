@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Daftar - Sistem Booking Ruangan{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow">
+            <div class="card-header bg-success text-white text-center">
+                <h4><i class="fas fa-user-plus"></i> Daftar Akun Baru</h4>
+            </div>
+            <div class="card-body">
+                {% crispy form %}
+                
+                <hr>
+                <div class="text-center">
+                    <p class="mb-0">Sudah punya akun? 
+                        <a href="{% url 'login' %}" class="text-decoration-none">Login di sini</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
