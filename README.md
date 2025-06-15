@@ -240,12 +240,7 @@ docker-compose exec web python manage.py shell
 4. Test thoroughly
 5. Submit pull request
 
-## License
-
-This project is licensed under the MIT License.
-
 ## Contact
-
-Untuk pertanyaan atau dukungan, hubungi:
-- Email: alan@ub.ac.id
+Punya pertanyaan? Bingung? Atau cuma pengen curhat soal bug?
+- Email: sudemo@codebuddy.ai
 - Project Repository: [GitHub Link]
