@@ -1,6 +1,37 @@
-# Sistem Booking Ruangan
+# 🏢 Room Booking System
 
-Aplikasi web untuk manajemen booking ruangan yang dibangun menggunakan Django, MySQL, dan Docker.
+![Django](https://img.shields.io/badge/Django-4.2.7-green) ![Python](https://img.shields.io/badge/Python-3.11-blue) ![MySQL](https://img.shields.io/badge/MySQL-8.0-orange) ![Docker](https://img.shields.io/badge/Docker-Compose-blue) ![Bootstrap](https://img.shields.io/badge/Bootstrap-5-purple)
+
+A complete **Room Booking System** built with Django 4.2.7, MySQL 8.0, and Docker. This application provides a modern, responsive interface for managing room reservations with user authentication, admin panel, and comprehensive booking management.
+
+## 🚀 Quick Start
+
+### ⚡ 30-Second Setup
+```bash
+git clone https://github.com/YOUR_USERNAME/room-booking-system.git
+cd room-booking-system
+docker-compose up -d
+```
+
+**Access Application**: http://localhost:8001  
+**Admin Panel**: http://localhost:8001/admin (admin/admin123)
+
+## 📚 Complete Documentation
+
+**📖 [Full Documentation](DOCUMENTATION.md)** - Start here for comprehensive guides
+
+### 🎯 Quick Navigation
+- **🚀 [Quick Start Guide](docs/setup/quick-start.md)** - Get running in 5 minutes
+- **🏢 [Room Management](docs/features/room-management.md)** - Complete room management guide
+- **📅 [Booking System](docs/features/booking-system.md)** - How to use booking features
+- **🔧 [Troubleshooting](docs/troubleshooting.md)** - Fix common issues
+- **❓ [FAQ](docs/faq.md)** - Frequently asked questions
+
+### 🛠 Setup & Deployment
+- **💻 [System Requirements](docs/setup/requirements.md)** - What you need
+- **🐳 [Docker Setup](docs/setup/docker-setup.md)** - Docker installation guide
+- **🚀 [Production Deployment](docs/deployment/production.md)** - Deploy to production
+- **⚙️ [Environment Setup](docs/setup/environment.md)** - Configuration guide
 
 ## Fitur Utama
 
