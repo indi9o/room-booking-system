@@ -78,13 +78,38 @@
             
             {% if booking.status == 'pending' and not booking.is_past %}
             <div class="card-footer">
-                <div class="d-flex gap-2">
-                    <a href="{% url 'update_booking' booking.pk %}" class="btn btn-warning">
-                        <i class="fas fa-edit"></i> Edit Booking
-                    </a>
-                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelModal">
-                        <i class="fas fa-times"></i> Batalkan
-                    </button>
+                <div class="d-flex gap-2 flex-wrap">
+                    <!-- Tombol untuk pemilik booking -->
+                    {% if user == booking.user %}
+                        <a href="{% url 'update_booking' booking.pk %}" class="btn btn-warning">
+                            <i class="fas fa-edit"></i> Edit Booking
+                        </a>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelModal">
+                            <i class="fas fa-times"></i> Batalkan
+                        </button>
+                    {% endif %}
+                    
+                    <!-- Tombol untuk staff approval -->
+                    {% if user.is_staff and booking.status == 'pending' %}
+                        <div class="btn-group" role="group">
+                            <a href="{% url 'approve_booking' booking.pk %}" 
+                               class="btn btn-success"
+                               onclick="return confirm('Yakin ingin menyetujui booking ini?')">
+                                <i class="fas fa-check"></i> Setujui
+                            </a>
+                            <a href="{% url 'reject_booking' booking.pk %}" 
+                               class="btn btn-danger">
+                                <i class="fas fa-times"></i> Tolak
+                            </a>
+                        </div>
+                    {% endif %}
+                    
+                    <!-- Link ke management panel untuk staff -->
+                    {% if user.is_staff %}
+                        <a href="{% url 'manage_bookings' %}" class="btn btn-outline-primary">
+                            <i class="fas fa-cogs"></i> Kelola Semua Booking
+                        </a>
+                    {% endif %}
                 </div>
             </div>
             {% endif %}
@@ -101,6 +126,14 @@
                 <p><strong>Dibuat:</strong> {{ booking.created_at|date:"d/m/Y H:i" }}</p>
                 {% if booking.updated_at != booking.created_at %}
                 <p><strong>Diupdate:</strong> {{ booking.updated_at|date:"d/m/Y H:i" }}</p>
+                {% endif %}
+                {% if booking.approved_by and booking.approved_at %}
+                <p><strong>Disetujui oleh:</strong> {{ booking.approved_by.get_full_name|default:booking.approved_by.username }}</p>
+                <p><strong>Waktu persetujuan:</strong> {{ booking.approved_at|date:"d/m/Y H:i" }}</p>
+                {% endif %}
+                {% if booking.notes and booking.status == 'rejected' %}
+                <p><strong>Alasan penolakan:</strong></p>
+                <p class="text-danger">{{ booking.notes }}</p>
                 {% endif %}
                 <p><strong>ID Booking:</strong> #{{ booking.id }}</p>
             </div>

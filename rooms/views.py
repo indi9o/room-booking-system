@@ -239,6 +239,107 @@ def check_availability(request):
     except Exception as e:
         return JsonResponse({'available': False, 'message': f'Error: {str(e)}'})
 
+@login_required
+def approve_booking(request, pk):
+    """View untuk menyetujui booking (hanya staff)"""
+    if not request.user.is_staff:
+        messages.error(request, 'Anda tidak memiliki izin untuk menyetujui booking.')
+        return redirect('booking_detail', pk=pk)
+    
+    booking = get_object_or_404(Booking, pk=pk)
+    
+    if booking.status != 'pending':
+        messages.error(request, 'Booking ini sudah diproses.')
+        return redirect('booking_detail', pk=pk)
+    
+    # Update booking status
+    old_status = booking.status
+    booking.status = 'approved'
+    booking.approved_by = request.user
+    booking.approved_at = timezone.now()
+    booking.save()
+    
+    # Create history record
+    BookingHistory.objects.create(
+        booking=booking,
+        old_status=old_status,
+        new_status='approved',
+        changed_by=request.user,
+        notes=f'Booking disetujui oleh {request.user.get_full_name() or request.user.username}'
+    )
+    
+    messages.success(request, f'Booking "{booking.title}" berhasil disetujui!')
+    return redirect('booking_detail', pk=pk)
+
+@login_required  
+def reject_booking(request, pk):
+    """View untuk menolak booking (hanya staff)"""
+    if not request.user.is_staff:
+        messages.error(request, 'Anda tidak memiliki izin untuk menolak booking.')
+        return redirect('booking_detail', pk=pk)
+    
+    booking = get_object_or_404(Booking, pk=pk)
+    
+    if booking.status != 'pending':
+        messages.error(request, 'Booking ini sudah diproses.')
+        return redirect('booking_detail', pk=pk)
+    
+    if request.method == 'POST':
+        rejection_reason = request.POST.get('rejection_reason', '')
+        
+        # Update booking status
+        old_status = booking.status
+        booking.status = 'rejected'
+        booking.notes = rejection_reason
+        booking.save()
+        
+        # Create history record
+        BookingHistory.objects.create(
+            booking=booking,
+            old_status=old_status,
+            new_status='rejected',
+            changed_by=request.user,
+            notes=f'Booking ditolak oleh {request.user.get_full_name() or request.user.username}. Alasan: {rejection_reason}'
+        )
+        
+        messages.success(request, f'Booking "{booking.title}" berhasil ditolak.')
+        return redirect('booking_detail', pk=pk)
+    
+    return render(request, 'rooms/reject_booking.html', {'booking': booking})
+
+@login_required
+def manage_bookings(request):
+    """View untuk mengelola semua booking (hanya staff)"""
+    if not request.user.is_staff:
+        messages.error(request, 'Anda tidak memiliki izin untuk mengakses halaman ini.')
+        return redirect('home')
+    
+    bookings = Booking.objects.select_related('user', 'room').order_by('-created_at')
+    
+    # Filter berdasarkan status
+    status_filter = request.GET.get('status')
+    if status_filter:
+        bookings = bookings.filter(status=status_filter)
+    
+    # Filter berdasarkan ruangan
+    room_filter = request.GET.get('room')
+    if room_filter:
+        bookings = bookings.filter(room_id=room_filter)
+    
+    # Pagination
+    paginator = Paginator(bookings, 15)
+    page_number = request.GET.get('page')
+    bookings = paginator.get_page(page_number)
+    
+    context = {
+        'bookings': bookings,
+        'rooms': Room.objects.filter(is_active=True),
+        'status_choices': Booking.STATUS_CHOICES,
+        'current_status': status_filter,
+        'current_room': room_filter,
+    }
+    
+    return render(request, 'rooms/manage_bookings.html', context)
 
 # Import monitoring views
 from .monitoring import health_check, health_detailed, metrics

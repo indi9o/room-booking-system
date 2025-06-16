@@ -11,8 +11,14 @@ from django.core.cache import cache
 from django.conf import settings
 import time
 import os
-import psutil
 from datetime import datetime
+
+# Try to import psutil, use fallback if not available
+try:
+    import psutil
+    PSUTIL_AVAILABLE = True
+except ImportError:
+    PSUTIL_AVAILABLE = False
 
 
 @csrf_exempt
@@ -106,31 +112,46 @@ def health_detailed(request):
     
     # System Resources Check
     try:
-        # Memory usage
-        memory = psutil.virtual_memory()
-        health_data['checks']['memory'] = {
-            'status': 'pass' if memory.percent < 90 else 'warn',
-            'usage_percent': memory.percent,
-            'available_gb': round(memory.available / (1024**3), 2),
-            'total_gb': round(memory.total / (1024**3), 2)
-        }
-        
-        # Disk usage
-        disk = psutil.disk_usage('/')
-        health_data['checks']['disk'] = {
-            'status': 'pass' if disk.percent < 85 else 'warn',
-            'usage_percent': disk.percent,
-            'free_gb': round(disk.free / (1024**3), 2),
-            'total_gb': round(disk.total / (1024**3), 2)
-        }
-        
-        # CPU usage
-        cpu_percent = psutil.cpu_percent(interval=1)
-        health_data['checks']['cpu'] = {
-            'status': 'pass' if cpu_percent < 80 else 'warn',
-            'usage_percent': cpu_percent,
-            'core_count': psutil.cpu_count()
-        }
+        if PSUTIL_AVAILABLE:
+            # Memory usage
+            memory = psutil.virtual_memory()
+            health_data['checks']['memory'] = {
+                'status': 'pass' if memory.percent < 90 else 'warn',
+                'usage_percent': memory.percent,
+                'available_gb': round(memory.available / (1024**3), 2),
+                'total_gb': round(memory.total / (1024**3), 2)
+            }
+            
+            # Disk usage
+            disk = psutil.disk_usage('/')
+            health_data['checks']['disk'] = {
+                'status': 'pass' if disk.percent < 85 else 'warn',
+                'usage_percent': disk.percent,
+                'free_gb': round(disk.free / (1024**3), 2),
+                'total_gb': round(disk.total / (1024**3), 2)
+            }
+            
+            # CPU usage
+            cpu_percent = psutil.cpu_percent(interval=1)
+            health_data['checks']['cpu'] = {
+                'status': 'pass' if cpu_percent < 80 else 'warn',
+                'usage_percent': cpu_percent,
+                'core_count': psutil.cpu_count()
+            }
+        else:
+            # Fallback when psutil is not available
+            health_data['checks']['memory'] = {
+                'status': 'warn',
+                'message': 'psutil not available - system metrics disabled'
+            }
+            health_data['checks']['disk'] = {
+                'status': 'warn',
+                'message': 'psutil not available - system metrics disabled'
+            }
+            health_data['checks']['cpu'] = {
+                'status': 'warn',
+                'message': 'psutil not available - system metrics disabled'
+            }
         
     except Exception as e:
         health_data['checks']['system'] = {
@@ -187,9 +208,30 @@ def metrics(request):
         booking_rejected = Booking.objects.filter(status='rejected').count()
         
         # System metrics
-        memory = psutil.virtual_memory()
-        disk = psutil.disk_usage('/')
-        cpu_percent = psutil.cpu_percent()
+        if PSUTIL_AVAILABLE:
+            memory = psutil.virtual_memory()
+            disk = psutil.disk_usage('/')
+            cpu_percent = psutil.cpu_percent()
+            
+            system_metrics = f"""
+# HELP system_memory_usage_percent Memory usage percentage
+# TYPE system_memory_usage_percent gauge
+system_memory_usage_percent {memory.percent}
+
+# HELP system_disk_usage_percent Disk usage percentage
+# TYPE system_disk_usage_percent gauge
+system_disk_usage_percent {disk.percent}
+
+# HELP system_cpu_usage_percent CPU usage percentage
+# TYPE system_cpu_usage_percent gauge
+system_cpu_usage_percent {cpu_percent}
+"""
+        else:
+            system_metrics = """
+# HELP system_metrics_available System metrics availability
+# TYPE system_metrics_available gauge
+system_metrics_available 0
+"""
         
         metrics_text = f"""# HELP room_booking_rooms_total Total number of rooms
 # TYPE room_booking_rooms_total gauge
@@ -208,18 +250,7 @@ room_booking_bookings_total {booking_total}
 room_booking_bookings_by_status{{status="pending"}} {booking_pending}
 room_booking_bookings_by_status{{status="approved"}} {booking_approved}
 room_booking_bookings_by_status{{status="rejected"}} {booking_rejected}
-
-# HELP system_memory_usage_percent Memory usage percentage
-# TYPE system_memory_usage_percent gauge
-system_memory_usage_percent {memory.percent}
-
-# HELP system_disk_usage_percent Disk usage percentage
-# TYPE system_disk_usage_percent gauge
-system_disk_usage_percent {disk.percent}
-
-# HELP system_cpu_usage_percent CPU usage percentage
-# TYPE system_cpu_usage_percent gauge
-system_cpu_usage_percent {cpu_percent}
+{system_metrics}
 """
         
         return JsonResponse({

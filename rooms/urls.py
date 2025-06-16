@@ -18,6 +18,14 @@ urlpatterns = [
     path('bookings/<int:pk>/update/', views.update_booking, name='update_booking'),
     path('bookings/<int:pk>/cancel/', views.cancel_booking, name='cancel_booking'),
     
+    # Approval URLs (untuk staff)
+    path('bookings/<int:pk>/approve/', views.approve_booking, name='approve_booking'),
+    path('bookings/<int:pk>/reject/', views.reject_booking, name='reject_booking'),
+    path('manage-bookings/', views.manage_bookings, name='manage_bookings'),
+    
+    # AJAX URLs
+    path('ajax/check-availability/', views.check_availability, name='check_availability'),
+    
     # Monitoring & Health Check URLs
     path('health/', views.health_check, name='health_check'),
     path('health/detailed/', views.health_detailed, name='health_detailed'),

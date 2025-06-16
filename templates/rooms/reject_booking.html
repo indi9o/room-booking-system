@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Tolak Booking - {{ booking.title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-times-circle me-2"></i>
+                        Tolak Booking
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <!-- Informasi Booking -->
+                    <div class="alert alert-info">
+                        <h5>Informasi Booking</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Judul:</strong> {{ booking.title }}</p>
+                                <p><strong>Ruangan:</strong> {{ booking.room.name }}</p>
+                                <p><strong>Pemohon:</strong> {{ booking.user.get_full_name|default:booking.user.username }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Waktu:</strong> {{ booking.start_datetime|date:"d/m/Y H:i" }} - {{ booking.end_datetime|date:"d/m/Y H:i" }}</p>
+                                <p><strong>Peserta:</strong> {{ booking.participants }} orang</p>
+                                <p><strong>Status:</strong> 
+                                    <span class="badge bg-warning">{{ booking.get_status_display }}</span>
+                                </p>
+                            </div>
+                        </div>
+                        {% if booking.description %}
+                        <p><strong>Deskripsi:</strong> {{ booking.description }}</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Form Penolakan -->
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="rejection_reason" class="form-label">
+                                <strong>Alasan Penolakan <span class="text-danger">*</span></strong>
+                            </label>
+                            <textarea 
+                                class="form-control" 
+                                id="rejection_reason" 
+                                name="rejection_reason" 
+                                rows="4" 
+                                required
+                                placeholder="Jelaskan alasan penolakan booking ini..."
+                            ></textarea>
+                            <div class="form-text">
+                                Alasan penolakan akan dikirimkan kepada pemohon.
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'booking_detail' booking.pk %}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>
+                                Kembali
+                            </a>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-times me-2"></i>
+                                Tolak Booking
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
