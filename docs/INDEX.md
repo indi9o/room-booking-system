@@ -13,6 +13,7 @@ Dokumentasi lengkap untuk Room Booking System - Aplikasi manajemen pemesanan rua
 - [Deployment Guide](deployment/DEPLOYMENT_GUIDE.md) - Panduan deployment production
 - [Docker Deployment](deployment/DOCKER_DEPLOYMENT.md) - Deploy dengan Docker
 - [Server Configuration](deployment/SERVER_CONFIG.md) - Konfigurasi server
+- [Environment & Docker Integration](deployment/ENV_DOCKER_INTEGRATION.md) - Integrasi .env dan Docker Compose
 
 ### 🎯 [Features](features/)
 - [Booking System](features/BOOKING_SYSTEM.md) - Sistem pemesanan ruangan

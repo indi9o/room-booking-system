@@ -8,6 +8,7 @@ Direktori ini berisi berbagai script dan utility untuk membantu development, dep
 - **[start_app.sh](#start_appsh)** - Script startup aplikasi dengan setup otomatis
 - **[make_staff.py](#make_staffpy)** - Script untuk menjadikan user sebagai staff/admin
 - **[backup.sh](#backupsh)** - Database backup dan restore utilities
+- **[env_docker_integration.sh](#env_docker_integrationsh)** - .env dan Docker Compose integration tools
 - **[setup_i18n.sh](#setup_i18nsh)** - Setup internationalization dan multi-language support
 - **[performance_test.sh](#performance_testsh)** - Comprehensive performance testing dan health checks
 
@@ -97,6 +98,42 @@ python manage.py shell
 ```
 
 **Perfect for**: Data safety, migration, disaster recovery
+
+---
+
+### env_docker_integration.sh
+**Purpose**: Analyze dan optimize integrasi antara .env dan Docker Compose
+
+**Features**:
+- ✅ Analyze current configuration integration
+- ✅ Fix docker-compose.yml untuk menggunakan .env variables
+- ✅ Validate consistency antara .env dan docker-compose
+- ✅ Create comprehensive .env dari template
+- ✅ Backup configuration files
+- ✅ Best practices enforcement
+
+**Usage**:
+```bash
+# Interactive mode (show help)
+./tools/env_docker_integration.sh
+
+# Analyze current integration
+./tools/env_docker_integration.sh analyze
+
+# Fix docker-compose to use .env
+./tools/env_docker_integration.sh fix
+
+# Validate configuration consistency
+./tools/env_docker_integration.sh validate
+
+# Create comprehensive .env
+./tools/env_docker_integration.sh create-env
+
+# Backup current configuration
+./tools/env_docker_integration.sh backup
+```
+
+**Perfect for**: Configuration management, Docker optimization, environment consistency
 
 ---
 
