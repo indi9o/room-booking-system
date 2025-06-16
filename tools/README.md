@@ -7,6 +7,7 @@ Direktori ini berisi berbagai script dan utility untuk membantu development, dep
 ### 🚀 Development & Setup
 - **[start_app.sh](#start_appsh)** - Script startup aplikasi dengan setup otomatis
 - **[make_staff.py](#make_staffpy)** - Script untuk menjadikan user sebagai staff/admin
+- **[backup.sh](#backupsh)** - Database backup dan restore utilities
 - **[setup_i18n.sh](#setup_i18nsh)** - Setup internationalization dan multi-language support
 - **[performance_test.sh](#performance_testsh)** - Comprehensive performance testing dan health checks
 
@@ -66,6 +67,36 @@ python manage.py shell
 ```
 
 **Perfect for**: User management, admin access control
+
+---
+
+### backup.sh
+**Purpose**: Comprehensive database backup dan restore utilities
+
+**Features**:
+- ✅ Database backup dengan timestamp
+- ✅ Automated backup scheduling
+- ✅ Backup restoration dengan validasi
+- ✅ Backup integrity checks
+- ✅ Multiple backup retention policies
+- ✅ Configuration file support
+
+**Usage**:
+```bash
+# Create database backup
+./tools/backup.sh backup
+
+# Restore from backup
+./tools/backup.sh restore
+
+# Interactive mode
+./tools/backup.sh
+
+# View backup history
+./tools/backup.sh list
+```
+
+**Perfect for**: Data safety, migration, disaster recovery
 
 ---
 

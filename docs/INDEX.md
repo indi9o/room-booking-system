@@ -28,6 +28,7 @@ Dokumentasi lengkap untuk Room Booking System - Aplikasi manajemen pemesanan rua
 
 ### 🛠️ [Development](development/)
 - [Development Setup](development/DEV_SETUP.md) - Setup development environment
+- [Tools Guide](development/TOOLS_GUIDE.md) - Panduan lengkap development tools
 - [API Documentation](development/API.md) - Dokumentasi API
 - [Database Schema](development/DATABASE.md) - Skema database
 - [Testing](development/TESTING.md) - Panduan testing
@@ -57,7 +58,8 @@ Dokumentasi lengkap untuk Room Booking System - Aplikasi manajemen pemesanan rua
 
 ### Untuk Developer:
 1. 🛠️ Setup [Development Environment](development/DEV_SETUP.md)
-2. 📊 Pelajari [Database Schema](development/DATABASE.md)
+2. � Gunakan [Tools Guide](development/TOOLS_GUIDE.md) untuk development
+3. �📊 Pelajari [Database Schema](development/DATABASE.md)
 3. 🧪 Jalankan [Testing](development/TESTING.md)
 
 ### Untuk Admin/Staff:
