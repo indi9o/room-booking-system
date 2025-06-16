@@ -255,6 +255,30 @@ docker-compose exec web python manage.py shell
 4. Setup SSL certificate
 5. Configure database backup
 
+## 📚 Dokumentasi
+
+Dokumentasi lengkap tersedia di folder [`docs/`](docs/):
+
+### 🚀 Quick Access
+- **[📋 Index Dokumentasi](docs/INDEX.md)** - Panduan navigasi lengkap
+- **[🔧 Installation Guide](docs/setup/INSTALLATION.md)** - Panduan instalasi
+- **[🐳 Docker Setup](docs/setup/DOCKER.md)** - Setup dengan Docker
+- **[👤 User Guide](docs/guides/USER_GUIDE.md)** - Panduan pengguna
+- **[👨‍💼 Staff Guide](docs/guides/STAFF_GUIDE.md)** - Panduan staff
+
+### 📖 Dokumentasi Utama
+- **[Setup & Installation](docs/setup/)** - Instalasi dan konfigurasi
+- **[Features](docs/features/)** - Dokumentasi fitur-fitur
+- **[Deployment](docs/deployment/)** - Panduan deployment
+- **[Development](docs/development/)** - Setup development
+- **[Guides](docs/guides/)** - Panduan penggunaan
+- **[References](docs/references/)** - Referensi teknis
+- **[Admin](docs/admin/)** - Dokumentasi admin
+
+### ❓ Bantuan
+- **[FAQ](docs/faq.md)** - Pertanyaan yang sering diajukan
+- **[Troubleshooting](docs/troubleshooting.md)** - Penyelesaian masalah
+
 ## Troubleshooting
 
 ### Common Issues
