@@ -1,29 +1,56 @@
+# Unified Requirements for All Environments
+# Single file for both production and development
+
+# Core Framework
 Django==4.2.7
-mysqlclient==2.2.0
-python-decouple==3.8
-Pillow==10.1.0
-django-crispy-forms==2.1
-crispy-bootstrap5==0.7
 django-bootstrap-datepicker-plus==5.0.4
 
-# Monitoring & Performance
-psutil==5.9.6
-django-extensions==3.2.3
+# Forms and UI
+django-crispy-forms==2.1
+crispy-bootstrap5==0.7
 
-# Security
-django-ratelimit==4.1.0
-django-cors-headers==4.3.1
+# Environment Management
+python-decouple==3.8
 
-# Testing & Development
-coverage==7.3.2
-pytest==7.4.3
-pytest-django==4.7.0
-factory-boy==3.3.0
-
-# Internationalization
-django-rosetta==0.9.9
-
-# Production & Deployment
+# Production Web Server
 gunicorn==21.2.0
-whitenoise==6.6.0
+uvicorn[standard]==0.24.0
+
+# Performance & Monitoring  
+django-debug-toolbar==4.2.0
+django-extensions==3.2.3
+psutil==5.9.6
+
+# Caching & Sessions
+django-redis==5.4.0
+redis==4.6.0
+
+# Background Tasks
+celery[redis]==5.3.4
+django-celery-beat==2.5.0
+django-celery-results==2.5.1
+
+# Error Tracking & Monitoring
 sentry-sdk[django]==1.38.0
+django-health-check==3.17.0
+
+# Security Enhancements
+django-csp==3.7
+django-permissions-policy==4.17.0
+
+# Database Optimizations
+django-db-connection-pool[mysql]==1.2.4
+
+# Static Files & Media
+whitenoise[brotli]==6.6.0
+django-storages[boto3]==1.14.2
+Pillow==10.0.1
+
+# Email
+django-anymail[mailgun]==10.2
+
+# Backup & Maintenance
+django-dbbackup==4.0.2
+
+# Logging
+django-request-logging==0.7.5

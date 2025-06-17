@@ -1,37 +1,68 @@
 version: '3.8'
 
 services:
+  # Database
   db:
     image: mysql:8.0
-    container_name: room_usage_db
-    restart: always
+    container_name: ${CONTAINER_PREFIX:-room_booking}_db
+    restart: unless-stopped
     environment:
-      MYSQL_DATABASE: room_usage_db
-      MYSQL_USER: django_user
-      MYSQL_PASSWORD: django_password
-      MYSQL_ROOT_PASSWORD: root_password
-    ports:
-      - "3306:3306"
+      MYSQL_DATABASE: ${DB_NAME:-room_usage_db}
+      MYSQL_USER: ${DB_USER:-django_user}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-django_password}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root_password}
     volumes:
       - mysql_data:/var/lib/mysql
     command: --default-authentication-plugin=mysql_native_password
+    networks:
+      - app_network
+    # Conditional resource limits for production
+    deploy:
+      resources:
+        limits:
+          memory: ${DB_MEMORY_LIMIT:-512M}
+        reservations:
+          memory: ${DB_MEMORY_RESERVE:-256M}
 
+  # Web Application (adaptive for dev/prod)
   web:
     build: .
-    container_name: room_usage_web
-    command: ./docker-entrypoint.sh
-    volumes:
-      - .:/code
+    container_name: ${CONTAINER_PREFIX:-room_booking}_web
+    restart: unless-stopped
+    # Use django user in production, root in development
+    user: ${CONTAINER_USER:-root}
+    env_file:
+      - ${ENV_FILE:-.env}
     ports:
-      - "8001:8000"
+      - "0.0.0.0:${WEB_PORT:-8001}:8000"
+    volumes:
+      - ./media:/code/media
+      - ./staticfiles:/code/staticfiles
+      - ${LOGS_VOLUME:-./logs}:/code/logs
     depends_on:
       - db
-    environment:
-      - DEBUG=1
-      - DB_HOST=db
-      - DB_NAME=room_usage_db
-      - DB_USER=django_user
-      - DB_PASSWORD=django_password
+    networks:
+      - app_network
+    # Health check (especially useful for production)
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: ${HEALTH_INTERVAL:-60s}
+      timeout: ${HEALTH_TIMEOUT:-10s}
+      retries: ${HEALTH_RETRIES:-3}
+      start_period: ${HEALTH_START_PERIOD:-40s}
+      disable: ${HEALTH_DISABLE:-false}
+    # Resource limits for production
+    deploy:
+      resources:
+        limits:
+          memory: ${WEB_MEMORY_LIMIT:-1G}
+        reservations:
+          memory: ${WEB_MEMORY_RESERVE:-512M}
+
+networks:
+  app_network:
+    driver: bridge
 
 volumes:
   mysql_data:
+    driver: local

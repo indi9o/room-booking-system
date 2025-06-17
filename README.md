@@ -1,310 +1,408 @@
 # 🏢 Room Booking System
 
-![### 🛠 Development Tools
-- **🎯 [Development Tools](docs/development/tools.md)** - Complete tools guide
-- **⚡ [Start App Script](tools/start_app.sh)** - One-click setup & run
-- **👤 [User Management](tools/make_staff.py)** - Make users staff/admin
-- **⚡ [Performance Testing](tools/performance_test.sh)** - System performance validation
-- **🌐 [GitHub Setup](tools/github_setup.sh)** - Repository setup guideo](https://img.shields.io/badge/Django-4.2.7-green) ![Python](https://img.shields.io/badge/Python-3.11-blue) ![MySQL](https://img.shields.io/badge/MySQL-8.0-orange) ![Docker](https://img.shields.io/badge/Docker-Compose-blue) ![Bootstrap](https://img.shields.io/badge/Bootstrap-5-purple)
+Sistem pemesanan ruangan berbasis web yang dibangun dengan Django, MySQL, dan Docker. Aplikasi ini memungkinkan pengguna untuk memesan ruangan secara online dengan sistem persetujuan admin.
 
-A complete **Room Booking System** built with Django 4.2.7, MySQL 8.0, and Docker. This application provides a modern, responsive interface for managing room reservations with user authentication, admin panel, and comprehensive booking management.
+![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![Django](https://img.shields.io/badge/Django-4.2.7-green.svg)
+![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)
+![Docker](https://img.shields.io/badge/Docker-Compose-2496ED.svg)
+![MySQL](https://img.shields.io/badge/MySQL-8.0-orange.svg)
+
+## 🌟 Fitur Utama
+
+- ✅ **Manajemen Ruangan**: CRUD ruangan dengan informasi lengkap
+- 📅 **Sistem Booking**: Pemesanan dengan validasi konflik jadwal
+- 👥 **User Management**: Registrasi, login, dan manajemen pengguna
+- 🔐 **Authorization**: Role-based access (User, Staff, Admin)
+- 📱 **Responsive Design**: Interface modern dengan Bootstrap 5
+- 🎛️ **Admin Panel**: Dashboard lengkap untuk administrator
+- 📧 **Email Notifications**: Notifikasi booking via email
+- 🐳 **Docker Ready**: Deployment mudah dengan Docker Compose
 
 ## 🚀 Quick Start
 
-### ⚡ 30-Second Setup
+### 1. Clone Repository
 ```bash
 git clone https://github.com/YOUR_USERNAME/room-booking-system.git
 cd room-booking-system
+```
+
+### 2. Konfigurasi Environment
+
+⚠️ **PENTING**: Jangan pernah commit file `.env` ke repository!
+
+```bash
+# Copy template dan edit sesuai kebutuhan
+cp .env.example .env
+
+# Edit file .env dengan editor favorit
+nano .env
+```
+
+**🔐 Security Tips:**
+- Generate SECRET_KEY yang kuat: `python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"`
+- Gunakan password yang kompleks untuk database
+- Jangan gunakan kredensial default di production
+- Set `DEBUG=False` untuk production
+- Configure `ALLOWED_HOSTS` dengan domain yang tepat
+- Set `CSRF_TRUSTED_ORIGINS` untuk akses eksternal
+
+### 3. Jalankan Aplikasi
+
+**🚀 Method 1: Docker Compose (Recommended)**
+```bash
+# Build dan start containers
+docker-compose up -d
+
+# Monitor logs (optional)
+docker-compose logs -f web
+```
+
+**🔄 Method 2: Development Mode**
+```bash
+# Set DEBUG=True in .env first
+echo "DEBUG=True" >> .env
+
+# Start with development server
 docker-compose up -d
 ```
 
-**Access Application**: http://localhost:8001  
-**Admin Panel**: http://localhost:8001/admin (admin/admin123)
-
-## 📚 Complete Documentation
-
-**📖 [Full Documentation](DOCUMENTATION.md)** - Start here for comprehensive guides
-
-### 🎯 Quick Navigation
-- **🚀 [Quick Start Guide](docs/setup/quick-start.md)** - Get running in 5 minutes
-- **🏢 [Room Management](docs/features/room-management.md)** - Complete room management guide
-- ** [Troubleshooting](docs/troubleshooting.md)** - Fix common issues
-- **❓ [FAQ](docs/faq.md)** - Frequently asked questions
-
-### 🛠 Development Tools
-- **🎯 [Development Tools](docs/development/tools.md)** - Complete tools guide
-- **⚡ [Start App Script](tools/start_app.sh)** - One-click setup & run
-- **� [User Management](tools/make_staff.py)** - Make users staff/admin
-- **🌐 [GitHub Setup](tools/github_setup.sh)** - Repository setup guide
-
-### 🛠 Setup & Deployment
-- **💻 [System Requirements](docs/setup/requirements.md)** - What you need
-- **🚀 [Production Deployment](docs/deployment/production.md)** - Deploy to production
-- **🌐 [Remote Repository Setup](docs/setup/remote-repository.md)** - GitHub/GitLab setup
-
-## Fitur Utama
-
-- **Manajemen Ruangan**: CRUD ruangan dengan informasi lengkap (nama, lokasi, kapasitas, fasilitas, gambar)
-- **Sistem Booking**: User dapat membuat, melihat, edit, dan batalkan booking
-- **Status Management**: Sistem persetujuan booking (pending, approved, rejected, cancelled, completed)
-- **User Authentication**: Registrasi, login, logout dengan Django Auth
-- **Admin Panel**: Interface admin untuk mengelola ruangan dan booking
-- **Responsive Design**: UI modern dengan Bootstrap 5
-- **Real-time Validation**: Cek ketersediaan ruangan secara real-time
-- **History Tracking**: Riwayat perubahan status booking
-
-## Teknologi yang Digunakan
-
-- **Backend**: Django 4.2.7, Python 3.11+
-- **Database**: MySQL 8.0 (production), SQLite (development)
-- **Frontend**: Bootstrap 5, HTML5, CSS3, JavaScript
-- **Containerization**: Docker & Docker Compose
-- **Dependencies**: 
-  - django-crispy-forms (form styling)
-  - django-bootstrap-datepicker-plus (date/time picker)
-  - Pillow (image handling)
-  - python-decouple (environment variables)
-
-## Struktur Project
-
-```
-room_usage_project/
-├── room_usage_project/     # Project settings
-│   ├── settings.py
-│   ├── urls.py
-│   └── wsgi.py
-├── rooms/                  # Main application
-│   ├── models.py          # Database models
-│   ├── views.py           # View logic
-│   ├── forms.py           # Form definitions
-│   ├── admin.py           # Admin configuration
-│   └── urls.py            # URL patterns
-├── templates/             # HTML templates
-│   ├── base.html
-│   ├── rooms/
-│   └── registration/
-├── static/               # Static files (CSS, JS, images)
-├── media/               # User uploaded files
-├── requirements.txt     # Python dependencies
-├── docker-compose.yml   # Docker configuration
-├── Dockerfile          # Docker image definition
-└── README.md           # This file
+**⚡ Method 3: Production Mode**
+```bash
+# Ensure DEBUG=False in .env
+# Start with Gunicorn
+docker-compose up -d
 ```
 
-## Instalasi dan Setup
+### 4. Akses Aplikasi
+- **Web App**: http://localhost:8001
+- **Admin Panel**: http://localhost:8001/admin
+- **Health Check**: http://localhost:8001/health/
+- **Default Admin**: username: `admin`, password: `admin123` (⚠️ Change in production!)
 
-### 1. Development (Local dengan SQLite)
+### 5. External Access
+Untuk akses dari IP eksternal, update `.env`:
+```env
+ALLOWED_HOSTS=localhost,127.0.0.1,YOUR_SERVER_IP
+CSRF_TRUSTED_ORIGINS=http://localhost:8001,http://YOUR_SERVER_IP:8001
+```
+
+## 📦 Prasyarat
+
+- [Docker](https://docs.docker.com/get-docker/) 20.10+
+- [Docker Compose](https://docs.docker.com/compose/install/) 2.0+
+- Git
+- 2GB RAM minimum
+- 5GB storage space
+
+## ⚙️ Konfigurasi
+
+### Environment Variables (.env)
+
+```env
+# Debug Mode
+DEBUG=False
+
+# Security
+SECRET_KEY=your-super-secret-key-here
+ALLOWED_HOSTS=localhost,127.0.0.1,yourdomain.com
+
+# Database
+DB_HOST=db
+DB_NAME=room_usage_db
+DB_USER=django_user
+DB_PASSWORD=your-strong-password
+DB_PORT=3306
+MYSQL_ROOT_PASSWORD=your-mysql-root-password
+
+# Email (Optional)
+EMAIL_BACKEND=django.core.mail.backends.console.EmailBackend
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_USE_TLS=True
+EMAIL_HOST_USER=your-email@gmail.com
+EMAIL_HOST_PASSWORD=your-app-password
+
+# Default Admin
+DJANGO_SUPERUSER_USERNAME=admin
+DJANGO_SUPERUSER_EMAIL=admin@example.com
+DJANGO_SUPERUSER_PASSWORD=admin123
+```
+
+## 📚 Struktur Proyek
+
+```
+room-booking-system/
+├── 🐳 docker-compose.yml      # Docker services
+├── 🐳 Dockerfile              # Container definition
+├── 🔧 docker-entrypoint.sh    # Container startup script
+├── ⚙️ .env                    # Environment variables
+├── 📋 requirements.txt        # Python dependencies
+├── 🎨 templates/              # HTML templates
+├── 📁 staticfiles/            # Static assets
+├── 🏠 room_usage_project/     # Django project settings
+├── 🏢 rooms/                  # Main application
+├── 🛠️ scripts/                # Utility scripts
+│   ├── setup.sh                   # Complete setup automation
+│   ├── run-development.sh         # Development environment
+│   ├── run-production.sh          # Production deployment
+│   ├── dev-tools.sh               # Development utilities
+│   ├── monitor.sh                 # Monitoring and logs
+│   ├── backup.sh                  # Backup utilities
+│   └── README.md                  # Scripts documentation
+├── 📋 checklists/             # Development & deployment checklists
+│   ├── SECURITY_CHECKLIST.md      # Security guidelines
+│   ├── DEPLOYMENT_CHECKLIST.md    # Deployment steps
+│   ├── DEVELOPMENT_CHECKLIST.md   # Development workflow
+│   └── CODE_REVIEW_CHECKLIST.md   # Code review standards
+└── 📚 docs/                   # Detailed documentation
+```
+
+## 📋 Quick References
+
+**🛠️ Utility Scripts:**
+- 🚀 **[Setup Script](scripts/README.md)** - Complete automation setup
+- 🔧 **[Dev Tools](scripts/README.md#dev-toolssh)** - Development utilities  
+- 📊 **[Monitor](scripts/README.md#monitorsh)** - Application monitoring
+- 🗄️ **[Backup](scripts/README.md#backupsh)** - Data backup utilities
+
+**📋 Quality Checklists:**
+- 🔐 **[Security Checklist](checklists/SECURITY_CHECKLIST.md)** - Sebelum upload ke GitHub
+- 🚀 **[Deployment Checklist](checklists/DEPLOYMENT_CHECKLIST.md)** - Sebelum deploy production
+- 🔄 **[Development Checklist](checklists/DEVELOPMENT_CHECKLIST.md)** - Setup development
+- 📋 **[Code Review Checklist](checklists/CODE_REVIEW_CHECKLIST.md)** - Quality assurance
+
+## 🎯 Cara Penggunaan
+
+### Untuk User Biasa
+
+1. **Registrasi & Login**
+   - Buka http://localhost:8001
+   - Klik "Register" untuk membuat akun
+   - Login dengan kredensial yang dibuat
+
+2. **Melihat Ruangan**
+   - Browse daftar ruangan di homepage
+   - Klik ruangan untuk melihat detail
+   - Gunakan fitur search untuk mencari ruangan
+
+3. **Membuat Booking**
+   - Pilih ruangan yang diinginkan
+   - Klik "Book This Room"
+   - Isi form booking dengan lengkap
+   - Submit dan tunggu approval admin
+
+4. **Mengelola Booking**
+   - Akses "My Bookings" di menu
+   - Lihat status booking
+   - Edit atau cancel booking jika diperlukan
+
+### Untuk Admin
+
+1. **Akses Admin Panel**
+   - Login sebagai admin
+   - Buka http://localhost:8001/admin
+
+2. **Mengelola Ruangan**
+   - Tambah, edit, atau hapus ruangan
+   - Upload gambar ruangan
+   - Set status aktif/tidak aktif
+
+3. **Mengelola Booking**
+   - Review booking pending
+   - Approve atau reject pemesanan
+   - Tambah catatan untuk user
+
+## 🔧 Development
+
+### Setup Development Environment
 
 ```bash
-# Clone atau extract project
+# Clone repository
+git clone https://github.com/YOUR_USERNAME/room-booking-system.git
 cd room-booking-system
 
-# Buat virtual environment
+# Setup virtual environment
 python -m venv venv
 source venv/bin/activate  # Linux/Mac
-# atau
-venv\Scripts\activate     # Windows
 
 # Install dependencies
 pip install -r requirements.txt
 
-# Setup database
-python manage.py makemigrations
+# Setup local database (SQLite)
+export DEBUG=True
 python manage.py migrate
-
-# Buat superuser
 python manage.py createsuperuser
-
-# Jalankan server
 python manage.py runserver
 ```
 
-### 2. Production (Docker dengan MySQL)
+### Menjalankan Tests
 
 ```bash
-# Jalankan dengan Docker Compose
-docker-compose up -d
+# Run all tests
+python manage.py test
 
-# Akses aplikasi di http://localhost:8000
+# Run specific app tests
+python manage.py test rooms
+
+# Run with coverage
+pip install coverage
+coverage run --source='.' manage.py test
+coverage report
 ```
 
-### 3. Quick Start Script
+### Code Style
+
+Proyek ini menggunakan:
+- **PEP 8** untuk Python code style
+- **Black** untuk code formatting
+- **isort** untuk import sorting
 
 ```bash
-# Jalankan script startup otomatis
-./start_app.sh
+# Format code
+black .
+isort .
 ```
 
-## Konfigurasi Environment
+## 🚀 Deployment
 
-Buat file `.env` di root project:
-
-```env
-DEBUG=1
-SECRET_KEY=your-secret-key-here
-DB_HOST=localhost
-DB_NAME=room_usage_db
-DB_USER=django_user
-DB_PASSWORD=django_password
-DB_PORT=3306
-```
-
-## Model Database
-
-### Room (Ruangan)
-- name: Nama ruangan
-- description: Deskripsi ruangan
-- capacity: Kapasitas maksimal
-- location: Lokasi ruangan
-- facilities: Fasilitas yang tersedia
-- image: Gambar ruangan
-- is_active: Status aktif/nonaktif
-
-### Booking (Pemesanan)
-- user: User yang membuat booking
-- room: Ruangan yang dibooking
-- title: Judul acara
-- description: Deskripsi acara
-- start_datetime: Waktu mulai
-- end_datetime: Waktu selesai
-- participants: Jumlah peserta
-- status: Status booking (pending/approved/rejected/cancelled/completed)
-- notes: Catatan tambahan
-
-### BookingHistory (Riwayat)
-- booking: Referensi ke booking
-- old_status: Status lama
-- new_status: Status baru
-- changed_by: User yang mengubah
-- notes: Catatan perubahan
-
-## API Endpoints
-
-### Authentication
-- `/accounts/login/` - Login page
-- `/accounts/logout/` - Logout
-- `/register/` - User registration
-
-### Rooms
-- `/` - Homepage
-- `/rooms/` - Daftar ruangan
-- `/rooms/<id>/` - Detail ruangan
-
-### Bookings
-- `/bookings/` - Daftar booking user
-- `/bookings/<id>/` - Detail booking
-- `/bookings/create/` - Form booking baru
-- `/bookings/create/<room_id>/` - Booking untuk ruangan tertentu
-- `/bookings/<id>/update/` - Edit booking
-- `/bookings/<id>/cancel/` - Batalkan booking
-
-### AJAX
-- `/ajax/check-availability/` - Cek ketersediaan ruangan
-
-## Admin Panel
-
-Akses admin panel di `/admin/` dengan kredensial superuser.
-
-Features:
-- Manajemen ruangan (CRUD)
-- Manajemen booking (view, approve, reject)
-- User management
-- Riwayat booking
-
-## Docker Commands
-
+### Development
 ```bash
-# Build dan jalankan
-docker-compose up --build
+# Complete setup (recommended)
+./scripts/setup.sh
 
-# Jalankan di background
-docker-compose up -d
+# Quick development start
+./scripts/run-development.sh
+```
 
-# Stop containers
+### Production
+
+1. **Setup Server**
+   - Install Docker & Docker Compose
+   - Clone repository
+   - Konfigurasi environment variables
+
+2. **Deploy**
+   ```bash
+   # Set production settings
+   export DEBUG=False
+   export ALLOWED_HOSTS=yourdomain.com
+   
+   # Start services
+   docker-compose up -d --build
+   ```
+
+3. **SSL Setup (Optional)**
+   - Setup reverse proxy (Nginx)
+   - Configure SSL certificates
+   - Update ALLOWED_HOSTS
+
+## 🛠️ Maintenance
+
+### Backup Database
+```bash
+# Create backup
+docker-compose exec db mysqldump -u root -p room_usage_db > backup_$(date +%Y%m%d).sql
+
+# Restore backup
+docker-compose exec -T db mysql -u root -p room_usage_db < backup_20240101.sql
+```
+
+### Update Application
+```bash
+# Pull latest changes
+git pull origin main
+
+# Rebuild and restart
 docker-compose down
+docker-compose up -d --build
 
-# Lihat logs
-docker-compose logs web
-
-# Akses shell container
-docker-compose exec web python manage.py shell
+# Run migrations
+docker-compose exec web python manage.py migrate
 ```
 
-## Development
+### Monitor Application
+```bash
+# View logs
+docker-compose logs -f
 
-### Struktur URL
-- Root URL (`/`) mengarah ke homepage
-- Authentication URLs menggunakan Django built-in views
-- Room dan Booking URLs di dalam `rooms/urls.py`
+# Check container status
+docker-compose ps
 
-### Form Validation
-- Client-side validation dengan Bootstrap
-- Server-side validation di Django forms
-- Real-time availability checking via AJAX
+# Monitor resources
+docker stats
+```
 
-### Security
-- CSRF protection pada semua forms
-- User authentication required untuk booking
-- Object-level permissions (user hanya bisa edit booking sendiri)
-
-## Production Deployment
-
-1. Update `settings.py` untuk production
-2. Set environment variables yang sesuai
-3. Gunakan proper web server (nginx + gunicorn)
-4. Setup SSL certificate
-5. Configure database backup
-
-## 📚 Dokumentasi
-
-Dokumentasi lengkap tersedia di folder [`docs/`](docs/):
-
-### 🚀 Quick Access
-- **[📋 Index Dokumentasi](docs/INDEX.md)** - Panduan navigasi lengkap
-- **[🔧 Installation Guide](docs/setup/INSTALLATION.md)** - Panduan instalasi
-- **[🐳 Docker Setup](docs/setup/DOCKER.md)** - Setup dengan Docker
-- **[👤 User Guide](docs/guides/USER_GUIDE.md)** - Panduan pengguna
-- **[👨‍💼 Staff Guide](docs/guides/STAFF_GUIDE.md)** - Panduan staff
-
-### 📖 Dokumentasi Utama
-- **[Setup & Installation](docs/setup/)** - Instalasi dan konfigurasi
-- **[Features](docs/features/)** - Dokumentasi fitur-fitur
-- **[Deployment](docs/deployment/)** - Panduan deployment
-- **[Development](docs/development/)** - Setup development
-- **[Guides](docs/guides/)** - Panduan penggunaan
-- **[References](docs/references/)** - Referensi teknis
-- **[Admin](docs/admin/)** - Dokumentasi admin
-
-### ❓ Bantuan
-- **[FAQ](docs/faq.md)** - Pertanyaan yang sering diajukan
-- **[Troubleshooting](docs/troubleshooting.md)** - Penyelesaian masalah
-
-## Troubleshooting
+## 🐛 Troubleshooting
 
 ### Common Issues
 
-1. **MySQL Connection Error**
-   - Pastikan MySQL service running
-   - Check credentials di `.env`
-   - Untuk development, bisa gunakan SQLite
+**Container fails to start:**
+```bash
+docker-compose logs
+docker-compose down && docker-compose up -d
+```
 
-2. **Static Files Not Loading**
-   - Jalankan `python manage.py collectstatic`
-   - Check `STATIC_ROOT` setting
+**Database connection error:**
+```bash
+docker-compose ps
+docker-compose restart db
+```
 
-3. **Permission Denied**
-   - Check file permissions
-   - Untuk Docker, pastikan user permissions correct
+**Port already in use:**
+```bash
+sudo lsof -i :8001
+# Kill process or change port in docker-compose.yml
+```
 
-## Contributing
+**Permission issues:**
+```bash
+sudo chown -R $USER:$USER .
+chmod +x start.sh
+```
+
+## 📖 Dokumentasi
+
+📚 **[📋 Buka Portal Dokumentasi →](docs/README.md)**
+
+### 🚀 Quick Access
+- **[� User Manual](docs/DOCUMENTATION.md)** - Panduan penggunaan lengkap
+- **[❓ FAQ](docs/FAQ.md)** - Pertanyaan yang sering diajukan  
+- **[🔧 Developer Guide](docs/DEVELOPER.md)** - Setup development environment
+- **[🚀 Deployment Guide](docs/DEPLOYMENT.md)** - Deploy ke production
+- **[📡 API Documentation](docs/API.md)** - REST API reference
+
+### 📋 All Documentation
+**[📋 Complete Documentation Index](docs/README.md)** - Portal utama dengan navigasi lengkap berdasarkan peran Anda (User/Developer/Admin)
+
+## 🤝 Contributing
 
 1. Fork repository
-2. Create feature branch
-3. Make changes
-4. Test thoroughly
-5. Submit pull request
+2. Create feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to branch (`git push origin feature/AmazingFeature`)
+5. Open Pull Request
 
-## Contact
-Punya pertanyaan? Bingung? Atau cuma pengen curhat soal bug?
-- Email: sudemo@codebuddy.ai
-- Project Repository: [GitHub Link]
+## 📝 License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+## 👥 Team
+
+- **Developer**: Your Name
+- **Email**: your.email@domain.com
+- **GitHub**: [@yourusername](https://github.com/yourusername)
+
+## 🙏 Acknowledgments
+
+- Django Framework
+- Bootstrap CSS Framework
+- Docker & Docker Compose
+- MySQL Database
+- Font Awesome Icons
+
+---
+
+**🏢 Room Booking System - Simplifying room reservations for modern organizations**
+
+⭐ Don't forget to star this repository if you found it helpful!

@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from .health import health_check, health_check_detailed
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -27,7 +28,7 @@ urlpatterns = [
     path('ajax/check-availability/', views.check_availability, name='check_availability'),
     
     # Monitoring & Health Check URLs
-    path('health/', views.health_check, name='health_check'),
-    path('health/detailed/', views.health_detailed, name='health_detailed'),
+    path('health/', health_check, name='health_check'),
+    path('health/detailed/', health_check_detailed, name='health_check_detailed'),
     path('metrics/', views.metrics, name='metrics'),
 ]
