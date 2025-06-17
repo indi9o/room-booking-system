@@ -61,12 +61,15 @@ SLACK_WEBHOOK          # Slack webhook for notifications
 
 **Usage**:
 ```bash
-# Run tests locally
-python manage.py test --settings=room_usage_project.settings_test
+# Run tests via Docker
+./tools/docker_django.sh test
+
+# Run with custom settings
+./tools/docker_django.sh exec "python manage.py test --settings=room_usage_project.settings_test"
 
 # Run with coverage
-coverage run --source='.' manage.py test --settings=room_usage_project.settings_test
-coverage report
+./tools/docker_django.sh exec "coverage run --source='.' manage.py test --settings=room_usage_project.settings_test"
+./tools/docker_django.sh exec "coverage report"
 ```
 
 ---
@@ -286,19 +289,22 @@ message = _('Room booked successfully')
 {% trans "Welcome to Room Booking System" %}
 ```
 
-2. **Generate translation files**:
+2. **Generate translation files** (Docker-only):
 ```bash
-python manage.py makemessages -l id  # For Indonesian
-python manage.py makemessages -l zh  # For Chinese
+./tools/docker_django.sh exec "python manage.py makemessages -l id"  # For Indonesian
+./tools/docker_django.sh exec "python manage.py makemessages -l zh"  # For Chinese
+
+# or use the setup tool
+./tools/setup_i18n.sh
 ```
 
 3. **Edit translations**:
 - Edit `.po` files in `locale/[language]/LC_MESSAGES/`
 - Or use web interface at `/rosetta/` (admin required)
 
-4. **Compile translations**:
+4. **Compile translations** (Docker-only):
 ```bash
-python manage.py compilemessages
+./tools/docker_django.sh exec "python manage.py compilemessages"
 ```
 
 ### Language Switching

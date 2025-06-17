@@ -188,16 +188,17 @@ cd room-booking-system
 ./tools/start_app.sh
 ```
 
-### 2. Development
+### 2. Development (Docker-Only)
 ```bash
 # Run tests
-python manage.py test
+./tools/docker_django.sh test
 
 # Check coverage
-coverage run --source='.' manage.py test
-coverage report
+./tools/docker_django.sh exec "coverage run --source='.' manage.py test"
+./tools/docker_django.sh exec "coverage report"
 
 # Update translations
+./tools/setup_i18n.sh
 ./tools/setup_i18n.sh
 ```
 

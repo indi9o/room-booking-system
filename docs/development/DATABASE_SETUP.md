@@ -70,8 +70,8 @@ cp .env .env.backup
 # Set untuk SQLite mode (comment DB_HOST)
 # .env: #DB_HOST=db
 
-# Export data
-python manage.py dumpdata > data_backup.json
+# Export data (Docker-only)
+./tools/docker_django.sh exec "python manage.py dumpdata > data_backup.json"
 ```
 
 ### **Step 2: Import ke MySQL Docker**
