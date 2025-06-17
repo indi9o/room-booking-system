@@ -6,6 +6,7 @@ Direktori ini berisi berbagai script dan utility untuk membantu development, dep
 
 ### 🚀 Development & Setup
 - **[start_app.sh](#start_appsh)** - Script startup aplikasi dengan setup otomatis
+- **[docker_django.sh](#docker_djangosh)** - Docker Django management commands
 - **[make_staff.py](#make_staffpy)** - Script untuk menjadikan user sebagai staff/admin
 - **[backup.sh](#backupsh)** - Database backup dan restore utilities
 - **[env_docker_integration.sh](#env_docker_integrationsh)** - .env dan Docker Compose integration tools
@@ -42,6 +43,47 @@ chmod +x tools/start_app.sh
 ```
 
 **Perfect for**: First-time setup, development environment
+
+---
+
+### docker_django.sh
+**Purpose**: Comprehensive Docker Django management untuk development dan deployment
+
+**Features**:
+- ✅ Container management (up, down, build, restart)
+- ✅ Django commands (migrate, createsuperuser, shell, test)
+- ✅ Database operations (backup, restore, shell)
+- ✅ Development utilities (logs, exec, bash)
+- ✅ Auto container checking dan startup
+- ✅ Colored output dan user-friendly interface
+
+**Usage**:
+```bash
+# Container management
+./tools/docker_django.sh up               # Start all services
+./tools/docker_django.sh down             # Stop all services
+./tools/docker_django.sh build            # Build containers
+./tools/docker_django.sh restart          # Restart services
+./tools/docker_django.sh status           # Show container status
+
+# Django commands
+./tools/docker_django.sh migrate          # Run migrations
+./tools/docker_django.sh createsuperuser  # Create superuser
+./tools/docker_django.sh shell            # Django shell
+./tools/docker_django.sh test             # Run tests
+
+# Database operations
+./tools/docker_django.sh dbshell          # Database shell
+./tools/docker_django.sh dbbackup         # Create backup
+./tools/docker_django.sh dbrestore file   # Restore backup
+
+# Development
+./tools/docker_django.sh bash             # Container bash shell
+./tools/docker_django.sh exec 'command'   # Execute custom command
+./tools/docker_django.sh logs             # Show container logs
+```
+
+**Perfect for**: Docker-based development, container management, Django operations
 
 ---
 

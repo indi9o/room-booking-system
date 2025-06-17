@@ -18,14 +18,15 @@ echo -e "${BLUE}Available Tools:${NC}"
 echo ""
 
 echo -e "${GREEN}1.${NC} ${PURPLE}start_app.sh${NC}     - 🚀 One-click application startup"
-echo -e "${GREEN}2.${NC} ${PURPLE}make_staff.py${NC}    - 👤 Convert user to staff/admin"
-echo -e "${GREEN}3.${NC} ${PURPLE}backup.sh${NC}        - 💾 Database backup & restore utilities"
-echo -e "${GREEN}4.${NC} ${PURPLE}env_docker_integration.sh${NC} - 🔗 .env & Docker integration tools"
-echo -e "${GREEN}5.${NC} ${PURPLE}github_setup.sh${NC}  - 🌐 GitHub repository setup guide"
-echo -e "${GREEN}6.${NC} ${PURPLE}push_to_github.sh${NC} - 📤 Safe push to GitHub"
-echo -e "${GREEN}7.${NC} ${PURPLE}setup_i18n.sh${NC}    - 🌍 Setup internationalization"
-echo -e "${GREEN}8.${NC} ${PURPLE}performance_test.sh${NC} - ⚡ Performance testing & health checks"
-echo -e "${GREEN}9.${NC} ${PURPLE}tools/README.md${NC}   - 📖 Complete tools documentation"
+echo -e "${GREEN}2.${NC} ${PURPLE}docker_django.sh${NC} - 🐳 Docker Django management commands"
+echo -e "${GREEN}3.${NC} ${PURPLE}make_staff.py${NC}    - 👤 Convert user to staff/admin"
+echo -e "${GREEN}4.${NC} ${PURPLE}backup.sh${NC}        - 💾 Database backup & restore utilities"
+echo -e "${GREEN}5.${NC} ${PURPLE}env_docker_integration.sh${NC} - 🔗 .env & Docker integration tools"
+echo -e "${GREEN}6.${NC} ${PURPLE}github_setup.sh${NC}  - 🌐 GitHub repository setup guide"
+echo -e "${GREEN}7.${NC} ${PURPLE}push_to_github.sh${NC} - 📤 Safe push to GitHub"
+echo -e "${GREEN}8.${NC} ${PURPLE}setup_i18n.sh${NC}    - 🌍 Setup internationalization"
+echo -e "${GREEN}9.${NC} ${PURPLE}performance_test.sh${NC} - ⚡ Performance testing & health checks"
+echo -e "${GREEN}10.${NC} ${PURPLE}tools/README.md${NC}   - 📖 Complete tools documentation"
 echo ""
 
 echo -e "${YELLOW}Quick Commands:${NC}"
@@ -33,6 +34,8 @@ echo ""
 
 echo -e "${GREEN}Development:${NC}"
 echo "  ./tools/start_app.sh              # Start development environment"
+echo "  ./tools/docker_django.sh up       # Start Docker containers"
+echo "  ./tools/docker_django.sh migrate  # Run Django migrations"
 echo "  python tools/make_staff.py        # Make user staff (interactive)"
 echo ""
 
@@ -76,7 +79,7 @@ echo ""
 # Interactive launcher
 echo -e "${BLUE}🚀 Quick Launcher:${NC}"
 echo ""
-read -p "Enter tool number (1-9) or 'q' to quit: " choice
+read -p "Enter tool number (1-10) or 'q' to quit: " choice
 
 case $choice in
     1)
@@ -84,34 +87,38 @@ case $choice in
         ./tools/start_app.sh
         ;;
     2)
+        echo -e "\n${GREEN}Opening Docker Django management...${NC}"
+        ./tools/docker_django.sh
+        ;;
+    3)
         echo -e "\n${GREEN}Running make staff utility...${NC}"
         python tools/make_staff.py
         ;;
-    3)
+    4)
         echo -e "\n${GREEN}Opening backup utility...${NC}"
         ./tools/backup.sh
         ;;
-    4)
+    5)
         echo -e "\n${GREEN}Opening env & docker integration tools...${NC}"
         ./tools/env_docker_integration.sh
         ;;
-    5)
+    6)
         echo -e "\n${GREEN}Opening GitHub setup guide...${NC}"
         ./tools/github_setup.sh
         ;;
-    6)
+    7)
         echo -e "\n${GREEN}Running GitHub push...${NC}"
         ./tools/push_to_github.sh
         ;;
-    7)
+    8)
         echo -e "\n${GREEN}Setting up internationalization...${NC}"
         ./tools/setup_i18n.sh
         ;;
-    8)
+    9)
         echo -e "\n${GREEN}Running performance tests...${NC}"
         ./tools/performance_test.sh
         ;;
-    9)
+    10)
         echo -e "\n${GREEN}Opening tools documentation...${NC}"
         less tools/README.md
         ;;
