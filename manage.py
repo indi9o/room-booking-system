@@ -12,8 +12,9 @@ def main():
     except ImportError as exc:
         raise ImportError(
             "Couldn't import Django. Are you sure it's installed and "
-            "available on your PYTHONPATH environment variable? Did you "
-            "forget to activate a virtual environment?"
+            "available on your PYTHONPATH environment variable? "
+            "This application is designed to run via Docker containers. "
+            "Please use: ./tools/docker_django.sh [command]"
         ) from exc
     execute_from_command_line(sys.argv)
 

@@ -91,8 +91,8 @@ case $choice in
         ./tools/docker_django.sh
         ;;
     3)
-        echo -e "\n${GREEN}Running make staff utility...${NC}"
-        python tools/make_staff.py
+        echo -e "\n${GREEN}Running make staff utility via Docker...${NC}"
+        docker-compose exec web python tools/make_staff.py
         ;;
     4)
         echo -e "\n${GREEN}Opening backup utility...${NC}"

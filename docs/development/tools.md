@@ -26,13 +26,12 @@ chmod +x tools/start_app.sh
 ```
 
 **What it does**:
-- ✅ Activates virtual environment automatically
-- ✅ Installs/updates dependencies from requirements.txt
+- ✅ Starts Docker containers automatically
 - ✅ Runs database migrations (makemigrations + migrate)
 - ✅ Collects static files for proper CSS/JS loading
 - ✅ Creates superuser if none exists (admin/admin123)
 - ✅ Loads sample room data for testing
-- ✅ Starts development server on http://localhost:8000
+- ✅ Starts development server on http://localhost:8001
 
 **Perfect for**:
 - 🆕 **First-time setup** - Get running in under 2 minutes
@@ -161,17 +160,17 @@ git commit -m "Your changes"
 ./tools/push_to_github.sh
 ```
 
-### Production Deployment Preparation
+### Production Deployment Preparation (DOCKER-ONLY)
 
 ```bash
 # 1. Ensure all tests pass
-python manage.py test
+./tools/docker_django.sh test
 
 # 2. Verify static files
-python manage.py collectstatic --dry-run
+./tools/docker_django.sh exec "python manage.py collectstatic --dry-run"
 
 # 3. Check migrations
-python manage.py makemigrations --dry-run
+./tools/docker_django.sh exec "python manage.py makemigrations --dry-run"
 
 # 4. Safe push for deployment
 ./tools/push_to_github.sh
@@ -225,21 +224,20 @@ chmod +x tools/*.sh
 chmod +x tools/*.py
 ```
 
-### Environment Issues
+### Environment Issues (DOCKER-ONLY)
 ```bash
-# Reset virtual environment
-rm -rf venv
-python -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
+# Reset containers
+docker-compose down -v
+docker-compose build --no-cache
+docker-compose up -d
 ```
 
-### Database Issues
+### Database Issues (DOCKER-ONLY)
 ```bash
 # Reset database
-rm db.sqlite3
-python manage.py migrate
-python tools/make_staff.py --username admin
+docker-compose down -v
+./tools/docker_django.sh migrate
+./tools/docker_django.sh createsuperuser
 ```
 
 ## 📚 Related Documentation

@@ -39,7 +39,7 @@ languages=("id" "zh" "ja" "ko")
 
 for lang in "${languages[@]}"; do
     echo -e "${BLUE}🔄 Generating translation files for ${lang}...${NC}"
-    python manage.py makemessages -l $lang --ignore=venv --ignore=staticfiles
+    docker-compose exec web python manage.py makemessages -l $lang --ignore=staticfiles
     
     if [ $? -eq 0 ]; then
         echo -e "${GREEN}✅ Translation files generated for ${lang}${NC}"
@@ -50,24 +50,24 @@ done
 
 # Generate JavaScript translation files
 echo -e "${BLUE}🔄 Generating JavaScript translation files...${NC}"
-python manage.py makemessages -d djangojs -l id --ignore=venv --ignore=staticfiles
+docker-compose exec web python manage.py makemessages -d djangojs -l id --ignore=staticfiles
 
 # Compile existing translations
 echo -e "${BLUE}⚙️  Compiling existing translations...${NC}"
-python manage.py compilemessages
+docker-compose exec web python manage.py compilemessages
 
 echo ""
 echo -e "${GREEN}🎉 Internationalization setup complete!${NC}"
 echo ""
 echo -e "${YELLOW}📝 Next steps:${NC}"
 echo "1. Edit translation files in locale/[language]/LC_MESSAGES/django.po"
-echo "2. Run 'python manage.py compilemessages' after editing"
+echo "2. Run 'docker-compose exec web python manage.py compilemessages' after editing"
 echo "3. Add {% load i18n %} to your templates"
 echo "4. Use {% trans 'text' %} for translatable strings"
 echo "5. Access translation interface at /rosetta/ (admin required)"
 echo ""
 echo -e "${BLUE}🔗 Useful commands:${NC}"
-echo "  python manage.py makemessages -l [language]  # Generate new translations"
-echo "  python manage.py compilemessages             # Compile translations"  
-echo "  python manage.py runserver                   # Test with different languages"
+echo "  docker-compose exec web python manage.py makemessages -l [language]  # Generate new translations"
+echo "  docker-compose exec web python manage.py compilemessages             # Compile translations"  
+echo "  ./tools/docker_django.sh up                                         # Start application"
 echo ""

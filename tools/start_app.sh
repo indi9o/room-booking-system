@@ -1,9 +1,9 @@
 #!/bin/bash
 # =============================================================================
-# Start Application Script
+# Start Application Script - Docker Only
 # =============================================================================
-# Script untuk menjalankan Room Booking System dengan berbagai mode
-# Supports: development, production, docker modes
+# Script untuk menjalankan Room Booking System dengan Docker
+# All operations are performed via Docker containers - no local Python execution
 
 set -e  # Exit on any error
 
@@ -16,14 +16,13 @@ NC='\033[0m' # No Color
 
 # Configuration
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-VENV_DIR="$PROJECT_DIR/venv"
-DEFAULT_MODE="docker"
+DEFAULT_MODE="up"
 
 # Functions
 print_banner() {
     echo -e "${BLUE}"
     echo "╔═══════════════════════════════════════════════════════════════╗"
-    echo "║                    Room Booking System                       ║"
+    echo "║              Room Booking System - Docker Only               ║"
     echo "║                     Startup Script                           ║"
     echo "╚═══════════════════════════════════════════════════════════════╝"
     echo -e "${NC}"
@@ -32,24 +31,25 @@ print_banner() {
 print_help() {
     echo "Usage: $0 [MODE] [OPTIONS]"
     echo ""
-    echo "Modes:"
-    echo "  docker     - Run with Docker (default)"
-    echo "  dev        - Run development server"
-    echo "  prod       - Run production server"
-    echo "  migrate    - Run database migrations only"
-    echo "  test       - Run tests"
-    echo "  shell      - Open Django shell"
+    echo "Docker-Only Modes:"
+    echo "  up         - Start application with Docker (default)"
+    echo "  build      - Build and start with Docker"
+    echo "  down       - Stop Docker services"
+    echo "  restart    - Restart Docker services"
+    echo "  migrate    - Run database migrations via Docker"
+    echo "  test       - Run tests via Docker"
+    echo "  shell      - Open Django shell via Docker"
+    echo "  logs       - Show container logs"
     echo ""
     echo "Options:"
-    echo "  --build    - Force rebuild Docker images"
-    echo "  --fresh    - Fresh start (clean database)"
-    echo "  --port N   - Specify port (default: 8001 for docker, 8000 for dev)"
-    echo "  --help     - Show this help"
+    echo "  --build    - Force rebuild containers"
+    echo "  --fresh    - Fresh start (remove old containers)"
     echo ""
     echo "Examples:"
-    echo "  $0 docker --build        # Build and run with Docker"
-    echo "  $0 dev --port 8080       # Run dev server on port 8080"
+    echo "  $0                       # Start with Docker (default)"
+    echo "  $0 up --build            # Build and start"
     echo "  $0 migrate               # Run migrations only"
+    echo "  $0 test                  # Run tests"
 }
 
 log() {
@@ -66,53 +66,37 @@ error() {
 }
 
 check_dependencies() {
-    case $1 in
-        docker)
-            if ! command -v docker &> /dev/null; then
-                error "Docker is not installed. Please install Docker first."
-            fi
-            if ! command -v docker-compose &> /dev/null; then
-                error "Docker Compose is not installed. Please install Docker Compose first."
-            fi
-            ;;
-        dev|prod)
-            if ! command -v python3 &> /dev/null; then
-                error "Python 3 is not installed. Please install Python 3 first."
-            fi
-            ;;
-    esac
-}
-
-setup_virtualenv() {
-    log "Setting up virtual environment..."
-    if [ ! -d "$VENV_DIR" ]; then
-        python3 -m venv "$VENV_DIR"
-        log "Virtual environment created"
+    if ! command -v docker &> /dev/null; then
+        error "Docker is not installed. Please install Docker first."
     fi
-    
-    source "$VENV_DIR/bin/activate"
-    pip install --upgrade pip
-    pip install -r requirements.txt
-    log "Dependencies installed"
+    if ! command -v docker-compose &> /dev/null; then
+        error "Docker Compose is not installed. Please install Docker Compose first."
+    fi
 }
 
 check_env_file() {
     if [ ! -f "$PROJECT_DIR/.env" ]; then
-        if [ -f "$PROJECT_DIR/.env.example" ]; then
-            log "Copying .env.example to .env"
-            cp "$PROJECT_DIR/.env.example" "$PROJECT_DIR/.env"
-        else
-            warn "No .env file found. Creating basic .env file..."
-            cat > "$PROJECT_DIR/.env" << EOF
+        warn "No .env file found. Creating basic .env file for Docker..."
+        cat > "$PROJECT_DIR/.env" << EOF
+# Docker Configuration
 DEBUG=1
 SECRET_KEY=dev-secret-key-change-in-production
-DB_HOST=localhost
+ALLOWED_HOSTS=localhost,127.0.0.1,0.0.0.0
+
+# Database Configuration
+DB_HOST=db
 DB_NAME=room_usage_db
 DB_USER=django_user
 DB_PASSWORD=django_password
 DB_PORT=3306
+
+# MySQL Root Password
+MYSQL_ROOT_PASSWORD=root_password
+
+# Web Port
+WEB_PORT=8001
 EOF
-        fi
+        log ".env file created with Docker defaults"
     fi
 }
 
@@ -142,6 +126,8 @@ run_docker() {
         esac
     done
     
+    cd "$PROJECT_DIR"
+    
     log "Starting application with Docker..."
     log "Port: $port"
     
@@ -159,7 +145,6 @@ run_docker() {
     if docker-compose ps | grep -q "Up"; then
         log "✅ Application started successfully!"
         log "🌐 Access: http://localhost:$port"
-        log "🏥 Health: http://localhost:$port/health/"
         log "👨‍💼 Admin: http://localhost:$port/admin/"
         echo ""
         log "📊 Container status:"
@@ -169,93 +154,43 @@ run_docker() {
     fi
 }
 
-run_development() {
-    local port="8000"
-    
-    # Parse options
-    while [[ $# -gt 0 ]]; do
-        case $1 in
-            --port)
-                port="$2"
-                shift 2
-                ;;
-            --fresh)
-                log "Fresh start - cleaning database..."
-                rm -f db.sqlite3
-                shift
-                ;;
-            *)
-                shift
-                ;;
-        esac
-    done
-    
-    cd "$PROJECT_DIR"
-    setup_virtualenv
-    source "$VENV_DIR/bin/activate"
-    
-    log "Running database migrations..."
-    python manage.py migrate
-    
-    log "Collecting static files..."
-    python manage.py collectstatic --noinput
-    
-    log "Starting development server on port $port..."
-    python manage.py runserver "0.0.0.0:$port"
-}
-
-run_production() {
-    cd "$PROJECT_DIR"
-    setup_virtualenv
-    source "$VENV_DIR/bin/activate"
-    
-    log "Running production checks..."
-    python manage.py check --deploy
-    
-    log "Running database migrations..."
-    python manage.py migrate
-    
-    log "Collecting static files..."
-    python manage.py collectstatic --noinput
-    
-    log "Starting production server..."
-    gunicorn room_usage_project.wsgi:application --bind 0.0.0.0:8000
-}
-
 run_migrations() {
     cd "$PROJECT_DIR"
-    
-    if [ -f "$VENV_DIR/bin/activate" ]; then
-        source "$VENV_DIR/bin/activate"
-        python manage.py migrate
-    else
-        log "Running migrations in Docker..."
-        docker-compose exec web python manage.py migrate
-    fi
+    log "Running migrations via Docker..."
+    docker-compose exec web python manage.py migrate
+    log "✅ Migrations completed"
 }
 
 run_tests() {
     cd "$PROJECT_DIR"
-    
-    if [ -f "$VENV_DIR/bin/activate" ]; then
-        source "$VENV_DIR/bin/activate"
-        python manage.py test
-    else
-        log "Running tests in Docker..."
-        docker-compose exec web python manage.py test
-    fi
+    log "Running tests via Docker..."
+    docker-compose exec web python manage.py test
 }
 
 open_shell() {
     cd "$PROJECT_DIR"
-    
-    if [ -f "$VENV_DIR/bin/activate" ]; then
-        source "$VENV_DIR/bin/activate"
-        python manage.py shell
-    else
-        log "Opening Django shell in Docker..."
-        docker-compose exec web python manage.py shell
-    fi
+    log "Opening Django shell via Docker..."
+    docker-compose exec web python manage.py shell
+}
+
+stop_services() {
+    cd "$PROJECT_DIR"
+    log "Stopping Docker services..."
+    docker-compose down
+    log "✅ Services stopped"
+}
+
+restart_services() {
+    cd "$PROJECT_DIR"
+    log "Restarting Docker services..."
+    docker-compose restart
+    log "✅ Services restarted"
+}
+
+show_logs() {
+    cd "$PROJECT_DIR"
+    log "Showing container logs..."
+    docker-compose logs -f
 }
 
 # Main script
@@ -278,28 +213,34 @@ main() {
     # Check environment file
     check_env_file
     
-    # Check dependencies
-    check_dependencies "$MODE"
+    # Check Docker dependencies
+    check_dependencies
     
     # Execute based on mode
     case "$MODE" in
-        docker)
+        up|docker)
             run_docker "$@"
             ;;
-        dev|development)
-            run_development "$@"
+        build)
+            run_docker --build "$@"
             ;;
-        prod|production)
-            run_production "$@"
+        down|stop)
+            stop_services
+            ;;
+        restart)
+            restart_services
             ;;
         migrate)
-            run_migrations "$@"
+            run_migrations
             ;;
         test)
-            run_tests "$@"
+            run_tests
             ;;
         shell)
-            open_shell "$@"
+            open_shell
+            ;;
+        logs)
+            show_logs
             ;;
         *)
             error "Unknown mode: $MODE. Use --help for usage information."

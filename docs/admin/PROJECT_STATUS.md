@@ -151,13 +151,13 @@ cd room-booking-system
 docker-compose up -d
 ```
 
-### 💻 Local Development
+### 💻 Local Development (DEPRECATED - Use Docker instead)
 ```bash
-python -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-python manage.py migrate
-python manage.py runserver
+# ⚠️ DEPRECATED: Use Docker workflow instead
+# This is kept for reference only
+
+# Instead use:
+./tools/docker_django.sh up
 ```
 
 ### ☁️ Production

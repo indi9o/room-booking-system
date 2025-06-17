@@ -79,28 +79,20 @@ WSGI_APPLICATION = "room_usage_project.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# Use SQLite for development, MySQL for production with Docker
-if config('DB_HOST', default='') == 'db':  # Docker environment
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.mysql",
-            "NAME": config('DB_NAME', default='room_usage_db'),
-            "USER": config('DB_USER', default='django_user'),
-            "PASSWORD": config('DB_PASSWORD', default='django_password'),
-            "HOST": config('DB_HOST', default='localhost'),
-            "PORT": config('DB_PORT', default='3306'),
-            "OPTIONS": {
-                "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
-            },
-        }
+# Docker-only setup: MySQL database configuration
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": config('DB_NAME', default='room_usage_db'),
+        "USER": config('DB_USER', default='django_user'),
+        "PASSWORD": config('DB_PASSWORD', default='django_password'),
+        "HOST": config('DB_HOST', default='db'),
+        "PORT": config('DB_PORT', default='3306'),
+        "OPTIONS": {
+            "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
     }
-else:  # Local development
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
-        }
-    }
+}
 
 
 # Password validation

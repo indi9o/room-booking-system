@@ -93,46 +93,69 @@ room_usage_project/
 
 ## Instalasi dan Setup
 
-### 1. Development (Local dengan SQLite)
+### 1. Docker Development (Recommended)
 
 ```bash
-# Clone atau extract project
+# Clone project
+git clone <repository-url>
 cd room-booking-system
 
-# Buat virtual environment
-python -m venv venv
-source venv/bin/activate  # Linux/Mac
-# atau
-venv\Scripts\activate     # Windows
+# Start with Docker (one command!)
+./tools/start_app.sh
 
-# Install dependencies
-pip install -r requirements.txt
-
-# Setup database
-python manage.py makemigrations
-python manage.py migrate
-
-# Buat superuser
-python manage.py createsuperuser
-
-# Jalankan server
-python manage.py runserver
+# Or use Docker management tool
+./tools/docker_django.sh up
 ```
 
-### 2. Production (Docker dengan MySQL)
+**Access:**
+- 🌐 Application: http://localhost:8001
+- 👨‍💼 Admin: http://localhost:8001/admin
+- 📊 Admin credentials: admin/admin123
+
+### 2. Manual Docker Commands
 
 ```bash
-# Jalankan dengan Docker Compose
+# Start services
 docker-compose up -d
 
-# Akses aplikasi di http://localhost:8000
+# Run migrations
+docker-compose exec web python manage.py migrate
+
+# Create superuser
+docker-compose exec web python manage.py createsuperuser
+
+# Access container shell
+docker-compose exec web bash
 ```
 
-### 3. Quick Start Script
+### 3. Environment Configuration
+
+File `.env` akan dibuat otomatis saat pertama kali menjalankan `./tools/start_app.sh`.
+
+Manual setup (opsional):
 
 ```bash
-# Jalankan script startup otomatis
-./start_app.sh
+# Copy template
+cp .env.example .env
+
+# Edit sesuai kebutuhan
+nano .env
+```
+
+## Development Tools
+
+### Quick Tools Launcher
+```bash
+./tools.sh  # Interactive tool launcher
+```
+
+### Docker Management
+```bash
+./tools/docker_django.sh up        # Start services
+./tools/docker_django.sh down      # Stop services
+./tools/docker_django.sh migrate   # Run migrations
+./tools/docker_django.sh test      # Run tests
+./tools/docker_django.sh shell     # Django shell
 ```
 
 ## Konfigurasi Environment
