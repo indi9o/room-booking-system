@@ -21,12 +21,13 @@ echo -e "${GREEN}1.${NC} ${PURPLE}start_app.sh${NC}     - 🚀 One-click applica
 echo -e "${GREEN}2.${NC} ${PURPLE}docker_django.sh${NC} - 🐳 Docker Django management commands"
 echo -e "${GREEN}3.${NC} ${PURPLE}make_staff.py${NC}    - 👤 Convert user to staff/admin"
 echo -e "${GREEN}4.${NC} ${PURPLE}backup.sh${NC}        - 💾 Database backup & restore utilities"
-echo -e "${GREEN}5.${NC} ${PURPLE}env_docker_integration.sh${NC} - 🔗 .env & Docker integration tools"
-echo -e "${GREEN}6.${NC} ${PURPLE}github_setup.sh${NC}  - 🌐 GitHub repository setup guide"
-echo -e "${GREEN}7.${NC} ${PURPLE}push_to_github.sh${NC} - 📤 Safe push to GitHub"
-echo -e "${GREEN}8.${NC} ${PURPLE}setup_i18n.sh${NC}    - 🌍 Setup internationalization"
-echo -e "${GREEN}9.${NC} ${PURPLE}performance_test.sh${NC} - ⚡ Performance testing & health checks"
-echo -e "${GREEN}10.${NC} ${PURPLE}tools/README.md${NC}   - 📖 Complete tools documentation"
+echo -e "${GREEN}5.${NC} ${PURPLE}env_manager.sh${NC}   - 🔧 Multiple environment management"
+echo -e "${GREEN}6.${NC} ${PURPLE}env_docker_integration.sh${NC} - 🔗 .env & Docker integration tools"
+echo -e "${GREEN}7.${NC} ${PURPLE}github_setup.sh${NC}  - 🌐 GitHub repository setup guide"
+echo -e "${GREEN}8.${NC} ${PURPLE}push_to_github.sh${NC} - 📤 Safe push to GitHub"
+echo -e "${GREEN}9.${NC} ${PURPLE}setup_i18n.sh${NC}    - 🌍 Setup internationalization"
+echo -e "${GREEN}10.${NC} ${PURPLE}performance_test.sh${NC} - ⚡ Performance testing & health checks"
+echo -e "${GREEN}11.${NC} ${PURPLE}tools/README.md${NC}   - 📖 Complete tools documentation"
 echo ""
 
 echo -e "${YELLOW}Quick Commands:${NC}"
@@ -50,6 +51,9 @@ echo "  ./tools/push_to_github.sh         # Safe push to repository"
 echo ""
 
 echo -e "${GREEN}Configuration:${NC}"
+echo "  ./tools/env_manager.sh list       # List all environment files"
+echo "  ./tools/env_manager.sh use development      # Switch to development"
+echo "  ./tools/env_manager.sh use production       # Switch to production"
 echo "  ./tools/env_docker_integration.sh analyze   # Analyze .env & docker integration"
 echo "  ./tools/env_docker_integration.sh fix       # Fix docker-compose configuration"
 echo ""
@@ -79,7 +83,7 @@ echo ""
 # Interactive launcher
 echo -e "${BLUE}🚀 Quick Launcher:${NC}"
 echo ""
-read -p "Enter tool number (1-10) or 'q' to quit: " choice
+read -p "Enter tool number (1-11) or 'q' to quit: " choice
 
 case $choice in
     1)
@@ -99,26 +103,30 @@ case $choice in
         ./tools/backup.sh
         ;;
     5)
+        echo -e "\n${GREEN}Opening environment manager...${NC}"
+        ./tools/env_manager.sh
+        ;;
+    6)
         echo -e "\n${GREEN}Opening env & docker integration tools...${NC}"
         ./tools/env_docker_integration.sh
         ;;
-    6)
+    7)
         echo -e "\n${GREEN}Opening GitHub setup guide...${NC}"
         ./tools/github_setup.sh
         ;;
-    7)
+    8)
         echo -e "\n${GREEN}Running GitHub push...${NC}"
         ./tools/push_to_github.sh
         ;;
-    8)
+    9)
         echo -e "\n${GREEN}Setting up internationalization...${NC}"
         ./tools/setup_i18n.sh
         ;;
-    9)
+    10)
         echo -e "\n${GREEN}Running performance tests...${NC}"
         ./tools/performance_test.sh
         ;;
-    10)
+    11)
         echo -e "\n${GREEN}Opening tools documentation...${NC}"
         less tools/README.md
         ;;

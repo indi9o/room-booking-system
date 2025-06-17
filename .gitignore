@@ -53,12 +53,20 @@ staticfiles/
 
 # Environment variables
 .env
+.env.local
+.env.backup*
 .venv
 env/
 venv/
 ENV/
 env.bak/
 venv.bak/
+
+# Keep environment templates
+!.env.example
+!.env.development
+!.env.production
+!.env.test
 
 # IDE
 .vscode/

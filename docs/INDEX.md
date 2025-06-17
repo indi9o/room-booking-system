@@ -28,6 +28,7 @@ Dokumentasi lengkap untuk Room Booking System - Aplikasi manajemen pemesanan rua
 ### 🛠️ [Development](development/)
 - [Git Workflow](development/git-workflow.md) - Workflow Git dan kolaborasi tim
 - [Docker Setup](development/DOCKER_SETUP.md) - Docker-first development workflow
+- [Environment Management](development/ENVIRONMENT_MANAGEMENT.md) - Multiple environment configuration
 - [Database Setup](development/DATABASE_SETUP.md) - SQLite vs MySQL database configuration
 - [Advanced Features](development/advanced-features.md) - CI/CD, Monitoring, Security, i18n
 - [Tools Guide](development/TOOLS_GUIDE.md) - Panduan lengkap development tools
