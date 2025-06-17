@@ -5,21 +5,19 @@ Dokumentasi lengkap untuk Room Booking System - Aplikasi manajemen pemesanan rua
 ## 📋 Daftar Isi
 
 ### 🚀 [Setup & Installation](setup/)
-- [Installation Guide](setup/INSTALLATION.md) - Panduan instalasi lengkap
-- [Docker Setup](setup/DOCKER.md) - Setup menggunakan Docker
-- [Environment Configuration](setup/ENVIRONMENT.md) - Konfigurasi environment
+- [Quick Start Guide](setup/quick-start.md) - Panduan instalasi cepat
+- [System Requirements](setup/requirements.md) - Persyaratan sistem
+- [Remote Repository Setup](setup/remote-repository.md) - Setup GitHub/GitLab
 
 ### 🏗️ [Deployment](deployment/)
 - [Deployment Guide](deployment/DEPLOYMENT_GUIDE.md) - Panduan deployment production
-- [Docker Deployment](deployment/DOCKER_DEPLOYMENT.md) - Deploy dengan Docker
-- [Server Configuration](deployment/SERVER_CONFIG.md) - Konfigurasi server
+- [Production Deployment](deployment/production.md) - Deploy ke production dengan Docker
 - [Environment & Docker Integration](deployment/ENV_DOCKER_INTEGRATION.md) - Integrasi .env dan Docker Compose
 
 ### 🎯 [Features](features/)
 - [Booking System](features/BOOKING_SYSTEM.md) - Sistem pemesanan ruangan
 - [Approval System](features/APPROVAL_BOOKING_STATUS.md) - Sistem persetujuan booking
-- [User Management](features/USER_MANAGEMENT.md) - Manajemen pengguna
-- [Room Management](features/ROOM_MANAGEMENT.md) - Manajemen ruangan
+- [Room Management](features/room-management.md) - Manajemen ruangan
 
 ### 📖 [Guides](guides/)
 - [User Guide](guides/USER_GUIDE.md) - Panduan untuk pengguna
@@ -28,23 +26,20 @@ Dokumentasi lengkap untuk Room Booking System - Aplikasi manajemen pemesanan rua
 - [Room Creation Guide](guides/TAMBAH_RUANGAN_GUIDE.md) - Panduan menambah ruangan
 
 ### 🛠️ [Development](development/)
-- [Development Setup](development/DEV_SETUP.md) - Setup development environment
+- [Git Workflow](development/git-workflow.md) - Workflow Git dan kolaborasi tim
+- [Advanced Features](development/advanced-features.md) - CI/CD, Monitoring, Security, i18n
 - [Tools Guide](development/TOOLS_GUIDE.md) - Panduan lengkap development tools
-- [API Documentation](development/API.md) - Dokumentasi API
-- [Database Schema](development/DATABASE.md) - Skema database
-- [Testing](development/TESTING.md) - Panduan testing
+- [Development Tools](development/tools.md) - Script dan utilities untuk development
 
 ### 🔧 [References](references/)
+- [Documentation Index](references/DOCUMENTATION.md) - Master documentation navigation
 - [Git Information](references/GIT_INFO.md) - Informasi Git repository
 - [Remote Setup](references/REMOTE_SETUP.md) - Setup remote repository
 - [GitHub README](references/README_GITHUB.md) - Template README GitHub
-- [Configuration Reference](references/CONFIG.md) - Referensi konfigurasi
 
 ### 👨‍💼 [Admin](admin/)
 - [Project Status](admin/PROJECT_STATUS.md) - Status project dan roadmap
-- [Performance Monitoring](admin/MONITORING.md) - Monitoring performa
-- [Backup & Recovery](admin/BACKUP.md) - Backup dan recovery
-- [Security Guidelines](admin/SECURITY.md) - Panduan keamanan
+- [Implementation Summary](admin/DOCUMENTATION_SUMMARY.md) - Ringkasan implementasi lengkap
 
 ### ❓ [FAQ & Troubleshooting](/)
 - [FAQ](faq.md) - Frequently Asked Questions
