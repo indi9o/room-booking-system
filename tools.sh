@@ -36,7 +36,7 @@ echo -e "${GREEN}Development:${NC}"
 echo "  ./tools/start_app.sh              # Start development environment"
 echo "  ./tools/docker_django.sh up       # Start Docker containers"
 echo "  ./tools/docker_django.sh migrate  # Run Django migrations"
-echo "  python tools/make_staff.py        # Make user staff (interactive)"
+echo "  docker-compose exec web python tools/make_staff.py        # Make user staff (interactive)"
 echo ""
 
 echo -e "${GREEN}Database:${NC}"
@@ -66,7 +66,7 @@ echo ""
 
 echo -e "${BLUE}💡 Pro Tips:${NC}"
 echo "  • Run './tools/start_app.sh' for first-time setup"
-echo "  • Use 'python tools/make_staff.py' to get admin access"
+echo "  • Use 'docker-compose exec web python tools/make_staff.py' to get admin access"
 echo "  • Check 'tools/README.md' for detailed tool documentation"
 echo ""
 
